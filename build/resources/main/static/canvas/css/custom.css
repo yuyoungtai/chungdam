@@ -1,0 +1,403 @@
+/* ----------------------------------------------------------------
+	Custom CSS
+
+	Add all your Custom Styled CSS here for New Styles or
+	Overwriting Default Theme Styles for Better Handling Updates
+-----------------------------------------------------------------*/
+
+*, *:before, *:after{
+    box-sizing: border-box!important;
+}
+
+body{
+    overflow:auto!important;
+}
+
+.nblog{
+    width: 100%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://oding.s3.ap-northeast-2.amazonaws.com/index/banner/nblog.png");
+}
+.ncafe{
+    width: 100%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://oding.s3.ap-northeast-2.amazonaws.com/index/banner/ncafe.png");
+}
+.tistory{
+    width: 100%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://oding.s3.ap-northeast-2.amazonaws.com/index/banner/tistory.png");
+}
+.wdb{
+    width: 100%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://oding.s3.ap-northeast-2.amazonaws.com/index/banner/wdb.png");
+}
+.web{
+    width: 100%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://oding.s3.ap-northeast-2.amazonaws.com/index/banner/web.png");
+}
+
+.owl-carousel:hover .owl-nav .owl-next{
+    right: calc(calc(1*var(--owl-nav-sizes))/2);
+}
+
+#pre-view-info img{
+    width: 100%!important;
+}
+
+
+@keyframes blink-effect{
+    50%{
+        opacity: 0;
+    }
+}
+
+.carousel-item{
+    width: 280px !important;
+    display: block!important;
+}
+#spinner{
+    display: block;
+    position: fixed;
+    z-index: 1041;
+    top: calc(50% - (35px/2));
+    right: calc(50% - (100px/2));
+}
+.blink{
+    animation: blink-effect 1s step-end infinite;
+}
+
+.apply-banner-title h2{
+    font-size:54px;
+    color: white;
+}
+#page-title.page-title-dark span{
+    color: white!important;
+}
+#concept-img-list-wrap, #gallery-img-list-wrap{
+    height: 100%!important;
+}
+body.modal-open{
+    overflow: hidden;
+}
+.tp-video-play-button { display: none !important; }
+
+.tp-caption { white-space: nowrap; }
+
+.modal-backdrop{
+    z-index: 1049!important;
+}
+.a-prevent{
+    text-decoration: none;
+    outline : none;
+}
+.a-prevent:hover, a:active{
+    text-decoration: none;
+    color: white;
+}
+.filter-p-pricing{
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    background: #60C8CD;
+    color: #FFF;
+    padding: 8px 15px;
+    z-index: 1;
+}
+
+.p-price-msrp{
+    font-weight: 300;
+    padding-left: 12px;
+    margin-left: 10px;
+    border-left: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.filter-p-pricing::before{
+    position: absolute;
+    content: '';
+    display: block;
+    top: 0;
+    left: -8px;
+    height: 100%;
+    width: 32px;
+    background-color: #60C8CD;
+    -moz-transform: skew(-23deg,0deg);
+    -o-transform: skew(-23deg,0deg);
+    -ms-transform: skew(-23deg,0deg);
+    -webkit-transform: skew(
+            -23deg,
+            0deg);
+    transform: skew(
+            -23deg,
+            0deg);
+    z-index: -1;
+}
+
+.portfolio-image img{
+    width: auto!important;
+    max-height: 240px!important;
+    margin: 0 auto;
+}
+.cover-img{
+    width: 100%;
+    height: 240px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.product-cover-img{
+    width: 100%;
+    height: 240px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sdm-cover-img{
+    height: 240px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.sdm-dress-cover-img{
+    height: 240px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.wine-main-img{
+    width: 100%;
+    height: 246px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.h-700-cover-img{
+    height: 700px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.product-main-thumb{
+    max-width: 500px;
+    margin: 0 auto!important;
+    height: 280px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.movie-thumb{
+    max-width: 500px;
+    margin: 0 auto!important;
+    height: 180px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.vertical-img{
+    max-width: 100%;
+    margin: 0 auto!important;
+    height: 550px;
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.vertical-img-contain{
+    max-width: 100%;
+    margin: 0 auto!important;
+    height: 500px;
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.coupon-img{
+    max-width: 1000px;
+    margin: 0 auto!important;
+    height: 320px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.sel-border{
+    border: 3px solid #60C8CD;
+    border-radius: 10px;
+}
+
+.borer-oding{
+    border-color: #60C8CD;
+}
+
+.text-oding{
+    color: #60C8CD;
+}
+.text-y-oding{
+    color: #FAB983;
+}
+
+.btn-oding{
+    background-color: #60C8CD;
+}
+
+.btn-y-oding{
+    background-color: #FAB983;
+    color: white!important;
+}
+
+.text-brown{
+    color: #BD9578!important;
+}
+
+.bg-oding{
+    background-color: #60C8CD;
+}
+.bg-y-oding{
+    background-color: #FAB983;
+}
+/*------------------------------------
+클라쓰
+---------------------------------------*/
+#pop-content p{
+    margin-bottom: 2px!important;
+}
+#pop-content img{
+    margin : 30px 0!important;
+}
+
+/*------------------------------------
+light-box
+---------------------------------------*/
+.mfp-wrap{
+    z-index: 1057!important;
+}
+.mfp-bg{
+    z-index: 1057!important;
+}
+
+.mfp-content{
+    max-width:80%!important;
+}
+
+/*------------------------------------
+summernote
+---------------------------------------*/
+.note-toolbar{
+    background-color: #d0e9ea;
+}
+.note-btn{
+    border: 1px solid #969696;
+    background-color: white;
+}
+
+/*------------------------------------
+placeInfo slideImg
+---------------------------------------*/
+.slideImg{
+    height: 430px!important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.slideThumbImg{
+    height: 100px!important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.title-bottom-border h1, .title-bottom-border h2, .title-bottom-border h3, .title-bottom-border h4,
+.title-bottom-border h5, .title-bottom-border h6{
+    color: #60C8CD!important;
+}
+
+.info-background{
+    background-color: #F5F5F5;
+}
+
+.info-p-mb-0 p{
+    margin-bottom: 1rem!important;
+}
+
+.chapter-p-mb-0 p{
+    margin-bottom: 0px!important;
+}
+
+
+
+@media screen and (max-width: 768px){
+    .apply-banner-title h2{
+        font-size:32px;
+    }
+
+    .mfp-content{
+        max-width:100%!important;
+    }
+
+    .slideImg{
+        height: 230px!important;
+    }
+
+    .product-cover-img{
+        height: 130px;
+    }
+
+    .sdm-cover-img{
+        height: 120px;
+    }
+    .sdm-dress-cover-img{
+        height: 220px;
+    }
+
+    .product-main-thumb{
+        height: 220px;
+    }
+
+    #page-title{
+        padding: 50px 0!important;
+    }
+
+    .coupon-img{
+        height: 170px;
+    }
+
+    .vertical-img-contain{
+        height: 200px;
+    }
+
+    .h-700-cover-img{
+        height: 280px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .movie-thumb{
+        height: 266px;
+    }
+
+}
+

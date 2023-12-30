@@ -1,0 +1,130 @@
+{{>layout/indexHeader}}
+<body>
+<section id="page-title" class="page-title">
+    <div class="container clearfix">
+        <h1>계약 관리</h1>
+    </div>
+</section>
+<section>
+    <h3 class="">신규 계약</h3>
+    <div>
+        <button class="btn btn-success" onclick="showNewContModal();">신규 계약 등록</button>
+    </div>
+</section>
+
+<section>
+    <!--검색 섹션 -->
+    <p class="mb-1">고객 검색</p>
+    <div class="w-100 me-3">
+        <form action="#" onsubmit="return false;">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-3">
+                    <input id="search-hp-input" class="form-control" type="number" placeholder="전화번호 끝 4자리">
+                </div>
+                <div class="col-12 col-lg-3">
+                    <input id="search-name-input" class="form-control " type="text" placeholder="이름 입력">
+                </div>
+                <div class="col-12 col-lg-3">
+                    <input id="search-email-input" class="form-control" type="email" placeholder="이메일 입력">
+                </div>
+                <div class="col-6 col-lg-2 text-lg-end">
+                    <button id="search-btn" type="submit" class="btn btn-oding btn-sm text-white w-100"
+                            onclick="searchEvent();">검 색
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <!--검색 섹션 END -->
+</section>
+
+<!-- 신규 계약 등록 모달 -->
+<div id="add-cont-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">신규 계약 등록</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>신규 계약건을 등록합니다.</p>
+
+                <h3>고객 정보</h3>
+                <div class="mb-3">
+                    <div class="d-flex">
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">신랑님 성함</span>
+                                <input id="add-groom" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">신랑님 연락처</span>
+                                <input id="add-groom-hp" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">신부님 성함</span>
+                                <input id="add-bride" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">신부님 연락처</span>
+                                <input id="add-bride-hp" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">이메일</span>
+                            <input id="add-email" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <!--고객정보 END-->
+
+                <h3>이벤트 정보</h3>
+                <div class="mb-3">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">예식일</span>
+                        <input id="add-event-date" type="date" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">예식시간</span>
+                        <input id="add-event-time" type="time" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">보증인원</span>
+                        <input id="add-person" type="number" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <!--이벤트 정보 END-->
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취 소</button>
+                <button type="button" class="btn btn-primary" onclick="addNewEvent();">신규 등록</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 신규 계약 등록 모달 END -->
+
+<script src="/js/addContract.js"></script>
+{{>layout/indexFooter}}
+</body>
+</html>

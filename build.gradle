@@ -28,6 +28,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-mustache')
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.1.4'
