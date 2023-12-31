@@ -14,6 +14,26 @@ public class EventService {
     private final EventRepository repository;
 
     @Transactional
+    public List<EventDto> findEventsByEmail(String email){
+        return repository.findEventsByEmail(email);
+    }
+
+    @Transactional
+    public List<EventDto> findEventsByHp(String hp){
+        return repository.findEventsByHp(hp);
+    }
+
+    @Transactional
+    public List<EventDto> findEventsByName(String name){
+        return repository.findEventsByName(name);
+    }
+
+    @Transactional
+    public EventDto findEventByEventId(Long eventId){
+        return repository.findEventByEventId(eventId);
+    }
+
+    @Transactional
     public Long save(EventDto dto){
         return repository.save(dto.toEntity()).getEventId();
     }

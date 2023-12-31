@@ -21,12 +21,14 @@ public class EventDto {
         private String foodMemo;
         private String cancel;
         private String createDate;
+        private String email;
 
         @Builder
     public EventDto(Event entity){
             this.eventId = entity.getEventId();
             this.eventDate = entity.getEventDate();
             this.eventTime = entity.getEventTime();
+            this.email = entity.getEmail();
             this.person = entity.getPerson();
             this.groom = entity.getGroom();
             this.groomHp = entity.getGroomHp();
@@ -42,6 +44,7 @@ public class EventDto {
         public Event toEntity(){
             return Event.builder()
                     .eventId(eventId)
+                    .email(email)
                     .eventDate(eventDate)
                     .eventTime(eventTime)
                     .person(person)

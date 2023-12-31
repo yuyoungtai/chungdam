@@ -14,7 +14,7 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name="user")
+@Table(name="event")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Event {
     @Column(name = "event_time", columnDefinition = "VARCHAR(12)")
     private String eventTime;
 
-    @Column(name = "event_date", nullable = false, columnDefinition = "INT(10) default 0")
+    @Column(nullable = false, columnDefinition = "INT(10) default 0")
     private int person;
 
     @Column(columnDefinition = "VARCHAR(50)")
@@ -57,9 +57,12 @@ public class Event {
     @Column(name="create_date", columnDefinition = "VARCHAR(12)")
     private String createDate;
 
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String email;
+
     @Builder
     public Event(Long eventId, String eventDate, String eventTime, int person, String groom, String groomHp, String bride,
-                 String brideHp, String directingMemo, String flowerMemo, String foodMemo, String cancel, String createDate){
+                 String brideHp, String directingMemo, String flowerMemo, String foodMemo, String cancel, String createDate, String email){
         this.eventId = eventId;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
@@ -73,6 +76,7 @@ public class Event {
         this.foodMemo = foodMemo;
         this.cancel = cancel;
         this.createDate = createDate;
+        this.email = email;
     }
 
     public void update(EventDto dto){
@@ -89,6 +93,7 @@ public class Event {
         this.foodMemo = dto.getFoodMemo();
         this.cancel = dto.getCancel();
         this.createDate = dto.getCreateDate();
+        this.email = dto.getEmail();
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
@@ -20,6 +21,36 @@ public class RestController {
 
     private final UserService userService;
     private final EventService eventService;
+
+    //event 이메일 검색
+    @RequestMapping("/searchEventByEmail")
+    public ResponseEntity<List<EventDto>> searchEventByEmail(@RequestBody EventDto reqDto){
+        List<EventDto> result = eventService.findEventsByEmail(reqDto.getGroomHp());
+
+        return new ResponseEntity<List<EventDto>>(result, HttpStatus.OK);
+    }
+
+    //event 전화번호 검색
+    @RequestMapping("/searchEventByHp")
+    public ResponseEntity<List<EventDto>> searchEventByHp(@RequestBody EventDto reqDto){
+        List<EventDto> result = eventService.findEventsByHp(reqDto.getGroomHp());
+
+        return new ResponseEntity<List<EventDto>>(result, HttpStatus.OK);
+    }
+
+    //Event 이름 검색
+    @RequestMapping("/searchEventByName")
+    public ResponseEntity<List<EventDto>> searchEventByName(@RequestBody EventDto reqDto){
+        List<EventDto> result = eventService.findEventsByName(reqDto.getGroom());
+
+        return new ResponseEntity<List<EventDto>>(result, HttpStatus.OK);
+    }
+
+    //eventId로 이벤트 정보가져오기
+    @RequestMapping("/findEventByEventId")
+    public ResponseEntity<EventDto> findEventByEventId(@RequestBody EventDto reqDto){
+        return new ResponseEntity<EventDto>(eventService.findEventByEventId(reqDto.getEventId()), HttpStatus.OK);
+    }
 
     //신규 이벤트 등록
     @RequestMapping("/addNewEvent")
@@ -35,6 +66,9 @@ public class RestController {
             }
         }
 
+        //등록일자 설정
+        String toDay = LocalDate.now().toString();
+        reqDto.setCreateDate(toDay);
         Long savedId = eventService.save(reqDto);
 
         return new ResponseEntity<String>(String.valueOf(savedId), HttpStatus.OK);

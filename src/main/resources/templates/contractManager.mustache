@@ -1,20 +1,19 @@
 {{>layout/indexHeader}}
 <body>
-<section id="page-title" class="page-title">
+<section id="page-title" class="page-title mb-5">
     <div class="container clearfix">
         <h1>계약 관리</h1>
     </div>
 </section>
-<section>
-    <h3 class="">신규 계약</h3>
+<section class="px-5 mb-5">
     <div>
         <button class="btn btn-success" onclick="showNewContModal();">신규 계약 등록</button>
     </div>
 </section>
 
-<section>
+<section class="px-5">
     <!--검색 섹션 -->
-    <p class="mb-1">고객 검색</p>
+    <h3 class="mb-1">고객 검색</h3>
     <div class="w-100 me-3">
         <form action="#" onsubmit="return false;">
             <div class="row align-items-center">
@@ -37,7 +36,87 @@
         </form>
     </div>
     <!--검색 섹션 END -->
+    <hr>
 </section>
+
+<!-- 이벤트 정보 섹션 -->
+<section class="px-5">
+    <div id="cont-btn-group" class="invisible my-3">
+        <div class="">
+            <button class="btn btn-sm btn-warning mx-1">상담 메모</button>
+            <button class="btn btn-sm btn-warning mx-1">플라워 메모</button>
+            <button class="btn btn-sm btn-warning mx-1">케이터링 메모</button>
+            <button class="btn btn-sm btn-primary mx-1">이벤트 정보 수정</button>
+            <button class="btn btn-sm btn-success mx-1">항목추가</button>
+        </div>
+    </div>
+
+    <div class="bg-light">
+        <div class="d-flex col-11 justify-content-between mx-auto mb-3">
+            <div class="col-5">
+                <span>예식일</span>
+                <input id="event-date" type="date" class="form-control">
+            </div>
+            <div class="col-5">
+                <span>예식시간</span>
+                <input id="event-time" type="time" class="form-control">
+            </div>
+        </div>
+
+        <div class="d-flex col-11 justify-content-between mx-auto mb-3">
+            <div class="col-5">
+                <span>보증인원</span>
+                <input id="person" type="number" class="form-control">
+            </div>
+            <div class="col-5">
+                <span>이메일</span>
+                <input id="email" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="d-flex col-11 justify-content-between mx-auto mb-3">
+            <div class="col-5">
+                <span>신랑님</span>
+                <input id="groom" type="text" class="form-control">
+            </div>
+            <div class="col-5">
+                <span>신랑님 연락처</span>
+                <input id="groom-hp" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="d-flex col-11 justify-content-between mx-auto">
+            <div class="col-5">
+                <span>신부님</span>
+                <input id="bride" type="text" class="form-control">
+            </div>
+            <div class="col-5">
+                <span>신부님 연락처</span>
+                <input id="bride-hp" type="text" class="form-control">
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- 이벤트 정보 섹션 END -->
+
+<!--계약 정보 섹션 -->
+<section class="px-5 my-5">
+    <h3>계약정보</h3>
+
+    <div class="overflow-auto">
+        <div class="d-flex flex-nowrap text-center">
+            <div class="col-1 fw-bold">체크</div>
+            <div class="col-4 col-md-4 fw-bold">상품명</div>
+            <div class="col-3 fw-bold">단가</div>
+            <div class="col-1 fw-bold">수량</div>
+            <div class="col-3 fw-bold">총 액</div>
+        </div>
+        <hr>
+        <div id="cont-wrap" class=""></div>
+    </div>
+</section>
+<!--계약 정보 섹션 END -->
 
 <!-- 신규 계약 등록 모달 -->
 <div id="add-cont-modal" class="modal" tabindex="-1">
@@ -50,7 +129,8 @@
             <div class="modal-body">
                 <p>신규 계약건을 등록합니다.</p>
 
-                <h3>고객 정보</h3>
+                <h3 class="mb-2">고객 정보</h3>
+                <p>연락처가 없는 경우 "010"만 입력하세요.</p>
                 <div class="mb-3">
                     <div class="d-flex">
                         <div class="col-6">
@@ -124,7 +204,27 @@
 </div>
 <!-- 신규 계약 등록 모달 END -->
 
+<!--고객 검색 결과 모달 -->
+<div id="search-result-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">검색 결과</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="search-result-wrap"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫 기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--고객 검색 결과 모달END -->
+
 <script src="/js/addContract.js"></script>
+<script src="/js/search.js"></script>
 {{>layout/indexFooter}}
 </body>
 </html>
