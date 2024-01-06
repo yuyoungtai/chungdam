@@ -1,5 +1,6 @@
 package com.theclass.service;
 
+import com.theclass.domain.event.Event;
 import com.theclass.domain.event.EventRepository;
 import com.theclass.web.dto.EventDto;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository repository;
+
+    @Transactional
+    public void update(EventDto dto){
+        Event entity = repository.findById(dto.getEventId()).get();
+        entity.update(dto);
+    }
 
     @Transactional
     public List<EventDto> findEventsByEmail(String email){

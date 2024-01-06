@@ -124,11 +124,68 @@ const getEventByEventId = async (eventId) =>{
             eventId
         }).then(response => {
             //이벤트 정보 출력
+            //addContract.js
             printEventInfo(response.data);
+            //계약정보 출력
+            //search.js
+            getContractList(response.data.eventId);
             const currentModal = bootstrap.Modal.getInstance(document.querySelector('#search-result-modal'));
             currentModal.hide();
         });
     }catch (e) {
         alert('이벤트 정보 로딩 오류: '+e);
+    }
+}
+
+//계약항목 불러오기
+const getContractList = async (eventId) => {
+    try{
+        await axios.post('/findContListByEventId', {
+            eventId
+        }).then(response=>{
+            //search.js
+           printContList(response.data);
+        });
+    }catch (e) {
+        alert('계약항목 불러오기 오류: '+e);
+    }
+}
+
+
+//계약항목 출력
+const printContList = (contList) => {
+    if(contList.length > 0){
+        document.querySelector('#contract-btn-group').classList.remove('invisible');
+
+        let tag = '';
+        let contTotal = 0;
+
+        contList.forEach(item => {
+            contTotal += item.total;
+
+            if(item.cancel !== 'null'){
+                console.log(item.cancel);
+                tag += `
+            <div class="d-flex flex-nowrap text-center align-items-center">
+                <div class="col-1"><input type="checkbox" class="cont-check" no="${item.contId}"></div>
+                <div class="col-4 col-md-4 fw-bold"><input type="text" class="form-control text-center cont-title" value="${item.prodTitle}"></div>
+                <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-supply" value="`+numberWithCommas(item.applyPrice)+`" onkeyup="getRowTotal(this);"></div>
+                <div class="col-1 fw-bold"><input type="text" class="form-control text-center cont-count" value="`+numberWithCommas(item.count)+`" onkeyup="getRowTotal(this);"></div>
+                <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-total" value="`+numberWithCommas(item.total)+`" readonly></div>
+            </div>`;
+            }else{
+                tag += `
+            <div class="d-flex flex-nowrap text-center align-items-center">
+                <div class="col-1"><input type="checkbox" class="cont-check text-danger" no="${item.contId}"></div>
+                <div class="col-4 col-md-4 fw-bold"><input type="text" class="form-control text-center cont-title text-danger" value="${item.prodTitle}"></div>
+                <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-supply text-danger" value="`+numberWithCommas(item.applyPrice)+`" onkeyup="getRowTotal(this);"></div>
+                <div class="col-1 fw-bold"><input type="text" class="form-control text-center cont-count text-danger" value="`+numberWithCommas(item.count)+`" onkeyup="getRowTotal(this);"></div>
+                <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-total text-danger" value="`+numberWithCommas(item.total)+`" readonly></div>
+            </div>`;
+            }
+        });
+        document.querySelector('#cont-wrap').innerHTML = tag;
+        document.querySelector('#total-price-wrap').innerHTML = `<hr><div class="justify-content-end d-flex my-5 text-end"><div class="col-1 fw-bold">전체총액</div><div class="col-2 fw-bold">`
+            +numberWithCommas(contTotal)+`</div></div>`;
     }
 }

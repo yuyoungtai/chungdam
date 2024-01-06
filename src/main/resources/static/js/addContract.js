@@ -116,6 +116,7 @@ const printEventInfo = (event) =>{
     document.querySelector('#groom-hp').value = event.groomHp;
     document.querySelector('#bride').value = event.bride;
     document.querySelector('#bride-hp').value = event.brideHp;
+    document.querySelector('#current-event-id').value = event.eventId;
 
     //계약 버튼 그룹 토글
     document.querySelector('#cont-btn-group').classList.remove('invisible');

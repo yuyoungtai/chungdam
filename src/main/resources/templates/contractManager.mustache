@@ -46,8 +46,9 @@
             <button class="btn btn-sm btn-warning mx-1">상담 메모</button>
             <button class="btn btn-sm btn-warning mx-1">플라워 메모</button>
             <button class="btn btn-sm btn-warning mx-1">케이터링 메모</button>
-            <button class="btn btn-sm btn-primary mx-1">이벤트 정보 수정</button>
-            <button class="btn btn-sm btn-success mx-1">항목추가</button>
+            <button class="btn btn-sm btn-primary mx-1" onclick="updateEvent();">이벤트 정보 수정</button>
+            <button class="btn btn-sm btn-success mx-1" onclick="addRow();">항목추가</button>
+            <input id="current-event-id" type="hidden">
         </div>
     </div>
 
@@ -103,10 +104,13 @@
 <!--계약 정보 섹션 -->
 <section class="px-5 my-5">
     <h3>계약정보</h3>
+    <div id="contract-btn-group" class="invisible my-3">
+        <button class="btn btn-sm btn-danger" onclick="cancelContList();">선택항목 취소</button>
+    </div>
 
     <div class="overflow-auto">
         <div class="d-flex flex-nowrap text-center">
-            <div class="col-1 fw-bold">체크</div>
+            <div class="col-1 fw-bold"><input id="all-check-btn" type="checkbox"></div>
             <div class="col-4 col-md-4 fw-bold">상품명</div>
             <div class="col-3 fw-bold">단가</div>
             <div class="col-1 fw-bold">수량</div>
@@ -114,6 +118,8 @@
         </div>
         <hr>
         <div id="cont-wrap" class=""></div>
+        <div id="total-price-wrap" class=""></div>
+        <div id="cont-save-wrap" class="text-end"><button class="btn btn-oding text-white" onclick="saveContList();">계약정보 저장</button></div>
     </div>
 </section>
 <!--계약 정보 섹션 END -->
@@ -225,6 +231,8 @@
 
 <script src="/js/addContract.js"></script>
 <script src="/js/search.js"></script>
+<script src="/js/editContract.js"></script>
+<script src="/js/editEvent.js"></script>
 {{>layout/indexFooter}}
 </body>
 </html>
