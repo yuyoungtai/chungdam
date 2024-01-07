@@ -43,16 +43,16 @@
 <section class="px-5">
     <div id="cont-btn-group" class="invisible my-3">
         <div class="">
-            <button class="btn btn-sm btn-warning mx-1">상담 메모</button>
-            <button class="btn btn-sm btn-warning mx-1">플라워 메모</button>
-            <button class="btn btn-sm btn-warning mx-1">케이터링 메모</button>
+            <button class="btn btn-sm btn-warning mx-1" onclick="showDmemo();">상담 메모</button>
+            <button class="btn btn-sm btn-warning mx-1" onclick="showFmemo();">플라워 메모</button>
+            <button class="btn btn-sm btn-warning mx-1" onclick="showCmemo();">케이터링 메모</button>
             <button class="btn btn-sm btn-primary mx-1" onclick="updateEvent();">이벤트 정보 수정</button>
             <button class="btn btn-sm btn-success mx-1" onclick="addRow();">항목추가</button>
             <input id="current-event-id" type="hidden">
         </div>
     </div>
 
-    <div class="bg-light">
+    <div class="bg-light py-3">
         <div class="d-flex col-11 justify-content-between mx-auto mb-3">
             <div class="col-5">
                 <span>예식일</span>
@@ -71,7 +71,7 @@
             </div>
             <div class="col-5">
                 <span>이메일</span>
-                <input id="email" type="text" class="form-control">
+                <input id="email" type="text" class="form-control" readonly>
             </div>
         </div>
 
@@ -101,9 +101,36 @@
 </section>
 <!-- 이벤트 정보 섹션 END -->
 
+<!--memo 섹션-->
+<section class="px-5 my-5">
+    <div id="d-memo-wrap" class="row d-none">
+        <h4 class="mb-2">상담실 메모</h4>
+        <textarea id="d-memo-info" class="w-100 form-control" rows="7"></textarea>
+        <div class="text-end mt-1">
+            <button type="button" class="btn btn-warning" onclick="updateDmemo();">저 장</button>
+        </div>
+    </div>
+    <div id="f-memo-wrap" class="row d-none">
+        <h4 class="mb-2">플라워팀 메모</h4>
+        <textarea id="f-memo-info" class="w-100 form-control" rows="7"></textarea>
+        <div class="text-end mt-1">
+            <button type="button" class="btn btn-warning" onclick="updateFmemo();">저 장</button>
+        </div>
+    </div>
+    <div id="c-memo-wrap" class="row d-none">
+        <h4 class="mb-2">케이터링 메모</h4>
+        <textarea id="c-memo-info" class="w-100 form-control" rows="7"></textarea>
+        <div class="text-end mt-1">
+            <button type="button" class="btn btn-warning" onclick="updateCmemo();">저 장</button>
+        </div>
+    </div>
+</section>
+<!--memo 섹션 END -->
+
 <!--계약 정보 섹션 -->
 <section class="px-5 my-5">
-    <h3>계약정보</h3>
+    <h3 class="mb-1">계약정보</h3>
+    <p><span class="text-danger">'붉은색'</span> 항목은 '취소'건입니다.</p>
     <div id="contract-btn-group" class="invisible my-3">
         <button class="btn btn-sm btn-danger" onclick="cancelContList();">선택항목 취소</button>
     </div>
@@ -119,7 +146,9 @@
         <hr>
         <div id="cont-wrap" class=""></div>
         <div id="total-price-wrap" class=""></div>
-        <div id="cont-save-wrap" class="text-end"><button class="btn btn-oding text-white" onclick="saveContList();">계약정보 저장</button></div>
+        <div id="cont-save-wrap" class="text-end">
+            <button class="btn btn-oding text-white" onclick="saveContList();">계약정보 저장</button>
+        </div>
     </div>
 </section>
 <!--계약 정보 섹션 END -->
@@ -228,11 +257,19 @@
     </div>
 </div>
 <!--고객 검색 결과 모달END -->
-
+{{>layout/indexFooter}}
 <script src="/js/addContract.js"></script>
 <script src="/js/search.js"></script>
 <script src="/js/editContract.js"></script>
 <script src="/js/editEvent.js"></script>
-{{>layout/indexFooter}}
+<script src="/js/contMemo.js"></script>
+<script type="text/javascript">
+    const itemMenuListEle = document.getElementsByClassName('menu-item');
+    for (const itemMenu of itemMenuListEle) {
+        itemMenu.classList.remove('current');
+    }
+
+    document.querySelector('#contract-menu').classList.add('current');
+</script>
 </body>
 </html>

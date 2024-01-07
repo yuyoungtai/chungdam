@@ -117,6 +117,9 @@ const printEventInfo = (event) =>{
     document.querySelector('#bride').value = event.bride;
     document.querySelector('#bride-hp').value = event.brideHp;
     document.querySelector('#current-event-id').value = event.eventId;
+    document.querySelector('#d-memo-info').value = event.directingMemo;
+    document.querySelector('#f-memo-info').value = event.flowerMemo;
+    document.querySelector('#c-memo-info').value = event.foodMemo;
 
     //계약 버튼 그룹 토글
     document.querySelector('#cont-btn-group').classList.remove('invisible');

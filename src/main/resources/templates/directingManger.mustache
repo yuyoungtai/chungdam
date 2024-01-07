@@ -1,0 +1,181 @@
+{{>layout/indexHeader}}
+<body>
+<section id="page-title" class="page-title mb-5">
+    <div class="container clearfix">
+        <h1>디렉팅 관리</h1>
+    </div>
+</section>
+
+<section class="container my-5">
+    <!--검색 섹션 -->
+    <div class="py-2 me-3">
+        <form action="#" onsubmit="return false;">
+            <div class="row align-items-center justify-content-end">
+                <div class="col-12 col-lg-3">
+                    <input id="search-hp-input" class="form-control" type="number" placeholder="전화번호 끝 4자리">
+                </div>
+                <div class="col-12 col-lg-3">
+                    <input id="search-name-input" class="form-control " type="text" placeholder="이름 입력">
+                </div>
+                <div class="col-12 col-lg-3">
+                    <input id="search-email-input" class="form-control" type="email" placeholder="이메일 입력">
+                </div>
+                <div class="col-6 col-lg-2">
+                    <button id="search-btn" type="submit" class="btn btn-oding btn-sm text-white w-100"
+                            onclick="searchDirecting();">검 색
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <!--검색 섹션 END -->
+</section>
+
+<!--캘린더 섹션 -->
+<section class="px-2">
+    <div id="calendar"></div>
+</section>
+<!--캘린더 섹션 END -->
+
+<!-- 이벤트 정보 섹션 -->
+<section class="container my-5">
+    <h3 class="py-2">이벤트 정보</h3>
+
+    <div class="">
+        <div class="d-flex align-items-center mb-3 py-3">
+            <div class="col-5 col-lg-1 text-center">신랑님</div>
+            <div class="col-6 col-lg-2">
+                <input class="form-control" id="groom" type="text">
+            </div>
+            <div class="col-5 col-lg-1 ms-2">신랑님 HP</div>
+            <div class="col-6 col-lg-2">
+                <input class="form-control" id="groom-hp" type="text">
+            </div>
+            <div class="col-5 col-lg-1 ms-2 text-center">신부님</div>
+            <div class="col-6 col-lg-2">
+                <input class="form-control" id="bride" type="text">
+            </div>
+            <div class="col-5 col-lg-1 ms-2">신부님 HP</div>
+            <div class="col-6 col-lg-2">
+                <input class="form-control" id="bride-hp" type="text">
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-3">
+            <div class="col-5 col-lg-1 me-2 text-center">본식일</div>
+            <div class="col-6 col-lg-2">
+                <input class="col-6 col-lg-2 form-control" id="event-date" type="date">
+            </div>
+            <div class="col-5 col-lg-1 ms-2 text-center">본식시간</div>
+            <div class="col-6 col-lg-2">
+                <input class="col-6 col-lg-2 form-control" id="event-time" type="time">
+            </div>
+            <div class="col-5 col-lg-1 ms-2 text-center">하객수</div>
+            <div class="col-6 col-lg-2">
+                <input class="col-6 col-lg-1 form-control" id="person" type="text">
+            </div>
+
+            <div class="col-5 col-lg-1 ms-2 text-center">이메일</div>
+            <div class="col-6 col-lg-2">
+                <input class="col-6 col-lg-3 form-control" id="email" type="email" disabled>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 이벤트 정보 섹션 END -->
+
+<!-- 디렉팅 파일 섹션 -->
+<section id="directing-section" class="container my-5 d-none">
+    <h3 class="py-2">디렉팅 현황</h3>
+
+    <div class="d-flex">
+        <div class="col-lg-2 py-2">
+            <p class="mb-1 fw-bold text-center">기획서</p>
+            <div class="col">
+                <input id="plan" type="file" class="form-control" data-show-preview="false">
+            </div>
+            <button id="plan-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
+                다운로드1
+            </button>
+            <button id="plan-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">
+                다운로드2
+            </button>
+            <div class="switch d-flex justify-content-center mt-2">
+                <input id="plan-switch" name="plan-switch" class="switch-toggle switch-toggle-round"
+                       type="checkbox" disabled>
+                <label for="plan-switch"></label>
+            </div>
+        </div>
+        <div class="col-lg-2 mx-2 align-items-center justify-content-center justify-content-md-start d-flex">
+            <button type="button" class="btn btn-oding text-white" onclick="sendPlanMsg();">고객알림 전송</button>
+        </div>
+    </div>
+</section>
+<!-- 디렉팅 파일 섹션 END -->
+
+
+<!--고객 검색 결과 모달 -->
+<div id="search-result-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">검색 결과</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="search-result-wrap"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫 기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--고객 검색 결과 모달END -->
+
+
+{{>layout/indexFooter}}
+<script src="/library/fullCalendar/moment.min.js"></script>
+<script src="/library/fullCalendar/fullcalendar.min.js"></script>
+<script src="/library/fullCalendar/ko.js"></script>
+<script src="/js/directingFile.js"></script>
+<script src="/js/searchDirecting.js"></script>
+<script type="text/javascript">
+    const itemMenuListEle = document.getElementsByClassName('menu-item');
+    for (const itemMenu of itemMenuListEle) {
+        itemMenu.classList.remove('current');
+    }
+
+    document.querySelector('#directing-menu').classList.add('current');
+
+    //캘린더 초기화.
+    $('#calendar').fullCalendar({
+        lang: 'ko',
+        firstDay: 1,
+        aspectRatio: 2,
+        //eventOrder          : 'Array',
+        eventOrder: 'title',
+        eventBackgroundColor: '#D09187',
+        eventBorderColor: '#D09187',
+        timeZone: 'local',
+        height: 'auto',
+        eventClick: function (date, jsEvent, view) {
+            //선택한 이벤트 데이터 가져오기
+            initDirectingView();
+            selDirectingData(date.id);
+        },
+        eventRender: function (event, element, monthView) {
+            /* if (event.title == 'fullEvent') {
+
+                 var dateString = event.start.format("YYYY-MM-DD");
+                 $(monthView.el[0]).find('.fc-day[data-date=' + dateString + ']').css('background-color', 'red');
+                 return false;
+             }*/
+        }
+    });
+
+    getCalendarData();
+</script>
+</body>
+</html>

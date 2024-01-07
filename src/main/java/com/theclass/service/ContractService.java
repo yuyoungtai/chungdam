@@ -15,6 +15,11 @@ public class ContractService {
     private final ContractRepository repository;
 
     @Transactional
+    public List<ContractDto> findContractByGroupByNoCancel(){
+        return repository.findContractByGroupByNoCancel();
+    }
+
+    @Transactional
     public ContractDto findContractByContId(Long contId){
         return repository.findContractByContId(contId);
     }

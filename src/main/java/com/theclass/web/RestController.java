@@ -1,19 +1,25 @@
 package com.theclass.web;
 
 import com.theclass.service.ContractService;
+import com.theclass.service.DirectingService;
 import com.theclass.service.EventService;
 import com.theclass.service.UserService;
-import com.theclass.web.dto.ContractDto;
-import com.theclass.web.dto.EventDto;
-import com.theclass.web.dto.UserDto;
+import com.theclass.utill.S3Uploader;
+import com.theclass.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
@@ -24,6 +30,147 @@ public class RestController {
     private final UserService userService;
     private final EventService eventService;
     private final ContractService contractService;
+    private final S3Uploader s3Uploader;
+    private final DirectingService directingService;
+
+    //디렉팅 파일 가져오기
+    @RequestMapping("/getDirectingFile")
+    public ResponseEntity<DirectingDto> getDirectingFile(@RequestBody DirectingDto reqDto){
+        DirectingDto directingDto = directingService.findDirectingByEmail(reqDto.getEmail());
+
+        return new ResponseEntity<DirectingDto>(directingDto, HttpStatus.OK);
+    }
+
+    //디렉팅 파일 업로드
+    @Transactional
+    @RequestMapping("/directingUpload")
+    public ResponseEntity<String> directingUpload(@RequestParam("file_data") MultipartFile file, HttpServletRequest req) throws IOException {
+
+        //업로드 파일 종류
+        String type = req.getParameter("id");
+        //이메일
+        String email = req.getParameter("email");
+
+        if (email.equals("")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            //aws s3 업로드
+            //파일 이름 랜덤 생성 후 'directing/{hostEmail}/랜덤파일네임' 리턴
+            String savedFilePath = s3Uploader.upload(file, "directing/" + email);
+
+            //directing 테이블 저장.
+            //기존 테이블이 있는지 검사.
+            DirectingDto currentDirectingDto = directingService.findDirectingByEmail(email);
+
+            if (currentDirectingDto == null) {
+                //신규 저장.
+                currentDirectingDto = new DirectingDto();
+                currentDirectingDto.setEmail(email);
+
+                if (type.equals("siksun")) {
+                    currentDirectingDto.setSiksun(savedFilePath);
+                } else if (type.equals("honin")) {
+                    currentDirectingDto.setHonin(savedFilePath);
+                } else if (type.equals("sunghon")) {
+                    currentDirectingDto.setSunghon(savedFilePath);
+                }else if (type.equals("plan")) {
+                    currentDirectingDto.setPlan(savedFilePath);
+                } else {
+                    //etc
+                    currentDirectingDto.setEtc(savedFilePath);
+                }
+                //테이블 저장.
+                directingService.save(currentDirectingDto);
+            } else {
+                //기존 정보 업데이트하고 기존 파일은 삭제처리
+                if (type.equals("siksun")) {
+                    if (currentDirectingDto.getSiksun() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getSiksun());
+                    }
+                    currentDirectingDto.setSiksun(savedFilePath);
+                } else if (type.equals("honin")) {
+                    if (currentDirectingDto.getHonin() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getHonin());
+                    }
+                    currentDirectingDto.setHonin(savedFilePath);
+                } else if (type.equals("sunghon")) {
+                    if (currentDirectingDto.getSunghon() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getSunghon());
+                    }
+                    currentDirectingDto.setSunghon(savedFilePath);
+                } else if (type.equals("plan")) {
+                    if (currentDirectingDto.getPlan() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getPlan());
+                    }
+                    currentDirectingDto.setPlan(savedFilePath);
+                } else {
+                    if (currentDirectingDto.getEtc() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getEtc());
+                    }
+                    currentDirectingDto.setEtc(savedFilePath);
+                }
+                directingService.update(currentDirectingDto);
+            }
+            return new ResponseEntity<String>(HttpStatus.OK);
+        }
+    }
+
+    //디렉팅 캘린더 데이터 가져오기
+    @RequestMapping("/getDirectingData")
+    public ResponseEntity<List<CalendarDto>> getDirectingData(){
+
+        List<CalendarDto> calendarDtoList = new ArrayList<CalendarDto>();
+
+        List<ContractDto> contList = contractService.findContractByGroupByNoCancel();
+
+        if(contList.size() > 0){
+            for(ContractDto cont : contList){
+                EventDto eventDto = eventService.findEventByEventId(cont.getEventId());
+                if(eventDto != null){
+                    CalendarDto calenda = new CalendarDto();
+
+                    calenda.setTitle(eventDto.getEventTime()+"/"+eventDto.getGroom()+"/"+eventDto.getBride()+"/"+eventDto.getEventTime()+"/"+eventDto.getGroom()+"/"+eventDto.getBride());
+                    calenda.setStart(eventDto.getEventDate());
+                    calenda.setId(eventDto.getEventId());
+                    calenda.setColor("#e08282");
+
+                    calendarDtoList.add(calenda);
+                }
+            }
+        }
+
+        return new ResponseEntity<List<CalendarDto>>(calendarDtoList, HttpStatus.OK);
+    }
+
+    //상담 메모 업데이트
+    @RequestMapping("/updateDmemo")
+    public ResponseEntity<String> updateDmemo(@RequestBody EventDto reqDto){
+        EventDto currentDto = eventService.findEventByEventId(reqDto.getEventId());
+        currentDto.setDirectingMemo(reqDto.getDirectingMemo());
+        eventService.update(currentDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //플라워 메모 업데이트
+    @RequestMapping("/updateFmemo")
+    public ResponseEntity<String> updateFmemo(@RequestBody EventDto reqDto){
+        EventDto currentDto = eventService.findEventByEventId(reqDto.getEventId());
+        currentDto.setFlowerMemo(reqDto.getFlowerMemo());
+        eventService.update(currentDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //케이터링 메모 업데이트
+    @RequestMapping("/updateCmemo")
+    public ResponseEntity<String> updateCmemo(@RequestBody EventDto reqDto){
+        EventDto currentDto = eventService.findEventByEventId(reqDto.getEventId());
+        currentDto.setFoodMemo(reqDto.getFoodMemo());
+        eventService.update(currentDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
 
     //계약항목 취소처리
     @RequestMapping("/cancelContList")

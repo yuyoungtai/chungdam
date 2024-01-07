@@ -13,9 +13,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ViewController {
     private final UserService userService;
 
+    @RequestMapping("/directingManger")
+    public String directingManger(){
+
+        return "directingManger";
+    }
+
     @RequestMapping("/")
     public String index(){
         return "index";
+    }
+
+    @RequestMapping("/contractManager")
+    public String contractManager(){
+        return  "contractManager";
     }
 
     @RequestMapping("/loginProcess")
