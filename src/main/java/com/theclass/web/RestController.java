@@ -1,9 +1,6 @@
 package com.theclass.web;
 
-import com.theclass.service.ContractService;
-import com.theclass.service.DirectingService;
-import com.theclass.service.EventService;
-import com.theclass.service.UserService;
+import com.theclass.service.*;
 import com.theclass.utill.S3Uploader;
 import com.theclass.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +29,46 @@ public class RestController {
     private final ContractService contractService;
     private final S3Uploader s3Uploader;
     private final DirectingService directingService;
+    private final CorpService corpService;
+    private final CorpContractService corpContractService;
+
+    @RequestMapping("/searchCorpByCorpHp")
+    public ResponseEntity<List<CorpDto>> searchCorpByCorpHp(@RequestBody CorpDto reqDto){
+        List<CorpDto> resultList = corpService.findCorpsByGuestHp(reqDto.getGuestHp());
+
+        return new ResponseEntity<List<CorpDto>>(resultList, HttpStatus.OK);
+    }
+
+    @RequestMapping("/searchCorpByCorpName")
+    public ResponseEntity<List<CorpDto>> searchCorpByCorpName(@RequestBody CorpDto reqDto){
+        List<CorpDto> resultList = corpService.findCorpsByCorpContaining(reqDto.getCorp());
+
+        return new ResponseEntity<List<CorpDto>>(resultList, HttpStatus.OK);
+    }
+
+    @RequestMapping("/searchCorpByEmail")
+    public ResponseEntity<List<CorpDto>> searchCorpByEmail(@RequestBody CorpDto reqDto){
+        List<CorpDto> resultList = corpService.findCorpsByEmail(reqDto.getEmail());
+
+        return new ResponseEntity<List<CorpDto>>(resultList, HttpStatus.OK);
+    }
+
+    @RequestMapping("/findCorpByCorpId")
+    public ResponseEntity<CorpDto> findCorpByCorpId(@RequestBody CorpDto reqDto){
+        CorpDto currentDto = corpService.findCorpsByCorpId(reqDto.getCorpId());
+
+        return new ResponseEntity<CorpDto>(currentDto, HttpStatus.OK);
+    }
+
+    //기업행사 신규 등록
+    @RequestMapping("/addNewCorpEvent")
+    public ResponseEntity<String> addNewCorpEvent(@RequestBody CorpDto reqDto){
+
+        reqDto.setCreateDate(LocalDate.now().toString());
+        Long savedId = corpService.save(reqDto);
+
+        return new ResponseEntity<String>(String.valueOf(savedId), HttpStatus.OK);
+    }
 
     //디렉팅 파일 가져오기
     @RequestMapping("/getDirectingFile")
@@ -75,6 +112,8 @@ public class RestController {
                     currentDirectingDto.setSunghon(savedFilePath);
                 }else if (type.equals("plan")) {
                     currentDirectingDto.setPlan(savedFilePath);
+                }else if (type.equals("mc")) {
+                    currentDirectingDto.setMc(savedFilePath);
                 } else {
                     //etc
                     currentDirectingDto.setEtc(savedFilePath);
@@ -103,11 +142,16 @@ public class RestController {
                         s3Uploader.delOneThumb(currentDirectingDto.getPlan());
                     }
                     currentDirectingDto.setPlan(savedFilePath);
-                } else {
-                    if (currentDirectingDto.getEtc() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getEtc());
+                }else if (type.equals("mc")) {
+                    if (currentDirectingDto.getMc() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getMc());
                     }
-                    currentDirectingDto.setEtc(savedFilePath);
+                    currentDirectingDto.setMc(savedFilePath);
+                } else {
+                    if (currentDirectingDto.getMc() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getMc());
+                    }
+                    currentDirectingDto.setMc(savedFilePath);
                 }
                 directingService.update(currentDirectingDto);
             }
@@ -172,6 +216,19 @@ public class RestController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
+    //기업행사 계약항목 취소처리
+    @RequestMapping("/cancelCorpContList")
+    public ResponseEntity<String> cancelCorpContList(@RequestBody List<CorpContractDto> reqList){
+        if(reqList.size() > 0){
+            for(CorpContractDto imsi : reqList){
+                CorpContractDto currentDto = corpContractService.findCorpContractByContId(imsi.getContId());
+                currentDto.setCancel(LocalDate.now().toString());
+                corpContractService.update(currentDto);
+            }
+        }
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
     //계약항목 취소처리
     @RequestMapping("/cancelContList")
     public ResponseEntity<String> cancelContList(@RequestBody List<ContractDto> reqList){
@@ -185,7 +242,21 @@ public class RestController {
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
-    //event 정보 업데이트
+    //event 정보 업데이트-디렉팅
+    @RequestMapping("/updateDirectingEvent")
+    public ResponseEntity<String> updateDirectingEvent(@RequestBody EventDto reqDto){
+        //취소, 생성일은 기존 정보 살리기
+        EventDto currentDto = eventService.findEventByEventId(reqDto.getEventId());
+        if (currentDto != null) {
+            reqDto.setCancel(currentDto.getCancel());
+            reqDto.setCreateDate(currentDto.getCreateDate());
+        }
+        eventService.update(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //event 정보 업데이트-계약관리
     @RequestMapping("/updateEvent")
     public ResponseEntity<String> updateEvent(@RequestBody EventDto reqDto) {
         //메모, 취소, 생성일은 기존 정보 살리기
@@ -202,6 +273,33 @@ public class RestController {
         eventService.update(reqDto);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //corp 정보 업데이트-계약관리
+    @RequestMapping("/updateCorp")
+    public ResponseEntity<String> updateCorp(@RequestBody CorpDto reqDto) {
+        //메모, 취소, 생성일은 기존 정보 살리기
+        CorpDto currentDto = corpService.findCorpsByCorpId(reqDto.getCorpId());
+        if (currentDto != null) {
+            reqDto.setDirectingMemo(currentDto.getDirectingMemo());
+            reqDto.setFlowerMemo(currentDto.getFlowerMemo());
+            reqDto.setFoodMemo(currentDto.getFoodMemo());
+            reqDto.setCancel(currentDto.getCancel());
+            reqDto.setCreateDate(currentDto.getCreateDate());
+        }
+
+
+        corpService.update(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //기업행사 계약항목 불러오기
+    @RequestMapping("/findCorpContListByCorpId")
+    public ResponseEntity<List<CorpContractDto>> findCorpContListByCorpId(@RequestBody CorpContractDto reqDto) {
+        List<CorpContractDto> currentList = corpContractService.findCorpContractsByCorpId(reqDto.getCorpId());
+
+        return new ResponseEntity<List<CorpContractDto>>(currentList, HttpStatus.OK);
     }
 
     //계약항목 불러오기
@@ -240,10 +338,38 @@ public class RestController {
         }
     }
 
+    //기업행사 계약항목 업데이트
+    @RequestMapping("/updateCorpContList")
+    public ResponseEntity<String> updateCorpContList(@RequestBody List<CorpContractDto> reqList) {
+
+        if (reqList.size() > 0) {
+
+            for (CorpContractDto imsi : reqList) {
+                CorpContractDto currentDto = corpContractService.findCorpContractByContId(imsi.getContId());
+                if (currentDto == null) {
+                    //신규 계약항목
+                    imsi.setCreateDate(LocalDate.now().toString());
+                    corpContractService.save(imsi);
+                } else {
+                    //업데이트
+                    //취소항목은 취소 날짜 이전
+                    imsi.setCancel(currentDto.getCancel());
+                    //생성 날짜 이전
+                    imsi.setCreateDate(currentDto.getCreateDate());
+                    corpContractService.update(imsi);
+                }
+            }
+            return new ResponseEntity<String>(String.valueOf(reqList.get(0).getCorpId()), HttpStatus.OK);
+        } else {
+            //업데이트 된 항목 없음
+            return new ResponseEntity<String>("noUpdate", HttpStatus.OK);
+        }
+    }
+
     //event 이메일 검색
     @RequestMapping("/searchEventByEmail")
     public ResponseEntity<List<EventDto>> searchEventByEmail(@RequestBody EventDto reqDto) {
-        List<EventDto> result = eventService.findEventsByEmail(reqDto.getGroomHp());
+        List<EventDto> result = eventService.findEventsByEmail(reqDto.getEmail());
 
         return new ResponseEntity<List<EventDto>>(result, HttpStatus.OK);
     }

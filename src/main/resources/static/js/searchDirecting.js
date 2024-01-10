@@ -11,6 +11,9 @@ const initDirectingView = () => {
 
     //디렉팅 파일 섹션 토글
     document.querySelector('#directing-section').classList.add('d-none');
+
+    //메모 섹션 토글
+    document.querySelector('#memo-section').classList.add('d-none');
 }
 
 const searchDirecting = () => {
@@ -153,6 +156,7 @@ const getEventByEventId = async (eventId) =>{
 }
 
 const printEventInfo = (eventData) => {
+    document.querySelector('#sel-event-id').value = eventData.eventId;
     document.querySelector('#email').value = eventData.email;
     document.querySelector('#groom').value = eventData.groom;
     document.querySelector('#groom-hp').value = eventData.groomHp;
@@ -162,8 +166,15 @@ const printEventInfo = (eventData) => {
     document.querySelector('#event-time').value = eventData.eventTime;
     document.querySelector('#person').value = eventData.person;
 
+    document.querySelector('#d-memo-info').value = eventData.directingMemo;
+    document.querySelector('#f-memo-info').value = eventData.flowerMemo;
+    document.querySelector('#c-memo-info').value = eventData.foodMemo;
+
     //디렉팅 파일 섹션 토글
     document.querySelector('#directing-section').classList.remove('d-none');
+
+    //메모 섹션 토글
+    document.querySelector('#memo-section').classList.remove('d-none');
 }
 
 //이벤트 데이터 가져오기
@@ -191,5 +202,30 @@ const selDirectingData = async (eventId) => {
         });
     }catch (e) {
         alert('데이터 가져오기 오류: '+e);
+    }
+}
+
+//이벤트 정보 저장
+const saveEvent = async () => {
+    try {
+        await axios.post('/updateDirectingEvent', {
+            eventId: document.querySelector('#sel-event-id').value,
+            email    : document.querySelector('#email').value,
+            groom      : document.querySelector('#groom').value,
+            groomHp   : document.querySelector('#groom-hp').value,
+            bride    : document.querySelector('#bride').value,
+            brideHp : document.querySelector('#bride-hp').value,
+            eventDate: document.querySelector('#event-date').value,
+            eventTime: document.querySelector('#event-time').value,
+            person   : document.querySelector('#person').value,
+            directingMemo: document.querySelector('#d-memo-info').value,
+            flowerMemo: document.querySelector('#f-memo-info').value,
+            foodMemo: document.querySelector('#c-memo-info').value,
+        }).then(response => {
+            alert('수정완료!');
+            self.location.reload();
+        });
+    } catch (e) {
+        alert('이벤트 저장 오류: ' + e);
     }
 }

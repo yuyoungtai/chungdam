@@ -31,6 +31,9 @@ public class Directing {
     private String siksun;
 
     @Column(columnDefinition = "VARCHAR(255)")
+    private String mc;
+
+    @Column(columnDefinition = "VARCHAR(255)")
     private String sunghon;
 
     @Column(columnDefinition = "VARCHAR(255)")
@@ -40,11 +43,12 @@ public class Directing {
     private String etc;
 
     @Builder
-    public Directing(Long directingId, String email, String plan, String siksun, String honin, String sunghon, String etc){
+    public Directing(Long directingId, String email, String plan, String mc, String siksun, String honin, String sunghon, String etc){
         this.directingId = directingId;
         this.email = email;
         this.plan = plan;
         this.siksun = siksun;
+        this.mc = mc;
         this.sunghon = sunghon;
         this.honin = honin;
         this.etc = etc;
@@ -55,6 +59,7 @@ public class Directing {
         this.email = dto.getEmail();
         this.plan = dto.getPlan();
         this.siksun = dto.getSiksun();
+        this.mc = dto.getMc();
         this.honin = dto.getHonin();
         this.sunghon = dto.getSunghon();
         this.etc = dto.getEtc();

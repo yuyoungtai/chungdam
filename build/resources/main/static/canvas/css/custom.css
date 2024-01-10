@@ -13,6 +13,11 @@ body{
     overflow:auto!important;
 }
 
+.fc-title {
+    padding: 0 1px;
+    white-space: normal;
+}
+
 .nblog{
     width: 100%;
     height: 40px;

@@ -15,78 +15,10 @@ const searchEvent = () => {
     }
 }
 
-//이름 검색
-const searchEventByName = async () => {
-    try{
-        await axios.post('/searchEventByName', {
-            groom: document.querySelector('#search-name-input').value
-        }).then(response => {
-           if(response.data.length === 0){
-               alert('결과가 없습니다.');
-           }else{
-                const resultModal = new bootstrap.Modal(document.querySelector('#search-result-modal'));
-                resultModal.show();
-
-                //검색 결과 출력
-                let tag = '';
-                response.data.forEach(item => {
-                    tag += `
-                        <div class="d-flex text-center my-2">
-                            <div class="col">${item.eventDate}</div>
-                            <div class="col">${item.eventTime}</div>
-                            <div class="col">${item.groom}</div>
-                            <div class="col">${item.groomHp}</div>
-                            <div class="col">${item.bride}</div>
-                            <div class="col">${item.brideHp}</div>
-                            <div class="col"><button class="btn btn-success" onclick="getEventByEventId('${item.eventId}');">선택</button></div>
-                        </div>`;
-                });
-                document.querySelector('#search-result-wrap').innerHTML = tag;
-           }
-        });
-    }catch (e) {
-        alert('이름검색 오류: '+e);
-    }
-}
-
-//전화번호 검색
-const searchEventByHp = async () => {
-    try{
-        await axios.post('/searchEventByHp', {
-            groomHp: document.querySelector('#search-hp-input').value
-        }).then(response => {
-            if(response.data.length === 0){
-                alert('결과가 없습니다.');
-            }else{
-                const resultModal = new bootstrap.Modal(document.querySelector('#search-result-modal'));
-                resultModal.show();
-
-                //검색 결과 출력
-                let tag = '';
-                response.data.forEach(item => {
-                    tag += `
-                        <div class="d-flex text-center my-2">
-                            <div class="col">${item.eventDate}</div>
-                            <div class="col">${item.eventTime}</div>
-                            <div class="col">${item.groom}</div>
-                            <div class="col">${item.groomHp}</div>
-                            <div class="col">${item.bride}</div>
-                            <div class="col">${item.brideHp}</div>
-                            <div class="col"><button class="btn btn-success" onclick="getEventByEventId('${item.eventId}');">선택</button></div>
-                        </div>`;
-                });
-                document.querySelector('#search-result-wrap').innerHTML = tag;
-            }
-        });
-    }catch (e) {
-        alert('전화번호 검색 오류: '+e);
-    }
-}
-
 //이메일 검색
 const searchEventByEmail = async () => {
     try{
-        await axios.post('/searchEventByEmail', {
+        await axios.post('/searchCorpByEmail', {
             email: document.querySelector('#search-email-input').value
         }).then(response => {
             if(response.data.length === 0){
@@ -100,13 +32,13 @@ const searchEventByEmail = async () => {
                 response.data.forEach(item => {
                     tag += `
                         <div class="d-flex text-center my-2">
+                            <div class="col">${item.corp}</div>
+                            <div class="col">${item.corpTitle}</div>
                             <div class="col">${item.eventDate}</div>
-                            <div class="col">${item.eventTime}</div>
-                            <div class="col">${item.groom}</div>
-                            <div class="col">${item.groomHp}</div>
-                            <div class="col">${item.bride}</div>
-                            <div class="col">${item.brideHp}</div>
-                            <div class="col"><button class="btn btn-success" onclick="getEventByEventId('${item.eventId}');">선택</button></div>
+                            <div class="col">${item.eventTime}</div>                          
+                            <div class="col">${item.guest}</div>
+                            <div class="col">${item.guestHp}</div>
+                            <div class="col"><button class="btn btn-success" onclick="getCorpByCorpId('${item.corpId}');">선택</button></div>
                         </div>`;
                 });
                 document.querySelector('#search-result-wrap').innerHTML = tag;
@@ -117,18 +49,86 @@ const searchEventByEmail = async () => {
     }
 }
 
-//eventId로 이벤트 정보 가져오기
-const getEventByEventId = async (eventId) =>{
+//기업명 검색
+const searchEventByName = async () => {
     try{
-        await axios.post('/findEventByEventId', {
-            eventId
+        await axios.post('/searchCorpByCorpName', {
+            corp: document.querySelector('#search-name-input').value
+        }).then(response => {
+            if(response.data.length === 0){
+                alert('결과가 없습니다.');
+            }else{
+                const resultModal = new bootstrap.Modal(document.querySelector('#search-result-modal'));
+                resultModal.show();
+
+                //검색 결과 출력
+                let tag = '';
+                response.data.forEach(item => {
+                    tag += `
+                        <div class="d-flex text-center my-2">
+                            <div class="col">${item.corp}</div>
+                            <div class="col">${item.corpTitle}</div>
+                            <div class="col">${item.eventDate}</div>
+                            <div class="col">${item.eventTime}</div>                          
+                            <div class="col">${item.guest}</div>
+                            <div class="col">${item.guestHp}</div>
+                            <div class="col"><button class="btn btn-success" onclick="getCorpByCorpId('${item.corpId}');">선택</button></div>
+                        </div>`;
+                });
+                document.querySelector('#search-result-wrap').innerHTML = tag;
+            }
+        });
+    }catch (e) {
+        alert('회사명 검색 오류: '+e);
+    }
+}
+
+//담당자 hp 검색
+const searchEventByHp = async () => {
+    try{
+        await axios.post('/searchCorpByCorpHp', {
+            guestHp: document.querySelector('#search-hp-input').value
+        }).then(response => {
+            if(response.data.length === 0){
+                alert('결과가 없습니다.');
+            }else{
+                const resultModal = new bootstrap.Modal(document.querySelector('#search-result-modal'));
+                resultModal.show();
+
+                //검색 결과 출력
+                let tag = '';
+                response.data.forEach(item => {
+                    tag += `
+                        <div class="d-flex text-center my-2">
+                            <div class="col">${item.corp}</div>
+                            <div class="col">${item.corpTitle}</div>
+                            <div class="col">${item.eventDate}</div>
+                            <div class="col">${item.eventTime}</div>                          
+                            <div class="col">${item.guest}</div>
+                            <div class="col">${item.guestHp}</div>
+                            <div class="col"><button class="btn btn-success" onclick="getCorpByCorpId('${item.corpId}');">선택</button></div>
+                        </div>`;
+                });
+                document.querySelector('#search-result-wrap').innerHTML = tag;
+            }
+        });
+    }catch (e) {
+        alert('전화번호 검색 오류: '+e);
+    }
+}
+
+//eventId로 이벤트 정보 가져오기
+const getCorpByCorpId = async (corpId) =>{
+    try{
+        await axios.post('/findCorpByCorpId', {
+            corpId
         }).then(response => {
             //이벤트 정보 출력
             //addContract.js
-            printEventInfo(response.data);
+            printCorpInfo(response.data);
             //계약정보 출력
-            //search.js
-            getContractList(response.data.eventId);
+            //searchCorp.js
+            getContractList(response.data.corpId);
             const currentModal = bootstrap.Modal.getInstance(document.querySelector('#search-result-modal'));
             currentModal.hide();
         });
@@ -138,13 +138,13 @@ const getEventByEventId = async (eventId) =>{
 }
 
 //계약항목 불러오기
-const getContractList = async (eventId) => {
+const getContractList = async (corpId) => {
     try{
-        await axios.post('/findContListByEventId', {
-            eventId
+        await axios.post('/findCorpContListByCorpId', {
+            corpId
         }).then(response=>{
             //search.js
-           printContList(response.data);
+            printContList(response.data);
         });
     }catch (e) {
         alert('계약항목 불러오기 오류: '+e);

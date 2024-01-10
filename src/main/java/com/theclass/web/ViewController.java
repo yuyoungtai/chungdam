@@ -24,6 +24,11 @@ public class ViewController {
         return "index";
     }
 
+    @RequestMapping("/contractCorpManager")
+    public String contractCorpManager(){
+        return  "contractCorpManager";
+    }
+
     @RequestMapping("/contractManager")
     public String contractManager(){
         return  "contractManager";
