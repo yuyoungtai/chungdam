@@ -15,6 +15,11 @@ public class CorpContractService {
     private final CorpContractRepository repository;
 
     @Transactional
+    public List<CorpContractDto> findCorpContractsByNoCancel(){
+        return repository.findCorpContractsByNoCancel();
+    }
+
+    @Transactional
     public CorpContractDto findCorpContractByContId(Long contId){
         return repository.findCorpContractByContId(contId);
     }

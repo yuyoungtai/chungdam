@@ -94,6 +94,9 @@ public class Corp {
         this.guestHp = dto.getGuestHp();
         this.email = dto.getEmail();
         this.tex = dto.getTex();
+        this.directingMemo = dto.getDirectingMemo();
+        this.flowerMemo = dto.getFlowerMemo();
+        this.foodMemo = dto.getFoodMemo();
     }
 
 }

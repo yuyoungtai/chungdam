@@ -78,6 +78,31 @@ public class RestController {
         return new ResponseEntity<DirectingDto>(directingDto, HttpStatus.OK);
     }
 
+    //기업행사-사업자등록증 업로드
+    @Transactional
+    @RequestMapping("/uploadCorpDoc")
+    public ResponseEntity<String> uploadCorpDoc(@RequestParam("file_data") MultipartFile file, HttpServletRequest req)throws IOException{
+        //업로드 파일 종류
+        String corpId = req.getParameter("corpId");
+
+        if (corpId.equals("")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            //aws s3 업로드
+            //파일 이름 랜덤 생성 후 'corpDoc/{corpId}/랜덤파일네임' 리턴
+            String savedFilePath = s3Uploader.upload(file, "corpDoc/" + corpId);
+
+            CorpDto currentCorpDto = corpService.findCorpsByCorpId(Long.valueOf(corpId));
+
+            if(currentCorpDto != null){
+                currentCorpDto.setTex(savedFilePath);
+                corpService.update(currentCorpDto);
+            }
+        }
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
     //디렉팅 파일 업로드
     @Transactional
     @RequestMapping("/directingUpload")
@@ -165,18 +190,40 @@ public class RestController {
 
         List<CalendarDto> calendarDtoList = new ArrayList<CalendarDto>();
 
+        //웨딩 계약건 가져오기
         List<ContractDto> contList = contractService.findContractByGroupByNoCancel();
 
+        //기업행사 계약건 가져오기
+        List<CorpContractDto> corpContList = corpContractService.findCorpContractsByNoCancel();
+
+        //웨딩 행사 데이터 가공
         if(contList.size() > 0){
             for(ContractDto cont : contList){
                 EventDto eventDto = eventService.findEventByEventId(cont.getEventId());
                 if(eventDto != null){
                     CalendarDto calenda = new CalendarDto();
 
-                    calenda.setTitle(eventDto.getEventTime()+"/"+eventDto.getGroom()+"/"+eventDto.getBride()+"/"+eventDto.getEventTime()+"/"+eventDto.getGroom()+"/"+eventDto.getBride());
+                    calenda.setTitle(eventDto.getEventTime()+"/"+eventDto.getGroom()+"/"+eventDto.getBride());
                     calenda.setStart(eventDto.getEventDate());
                     calenda.setId(eventDto.getEventId());
                     calenda.setColor("#e08282");
+
+                    calendarDtoList.add(calenda);
+                }
+            }
+        }
+
+        //기업행사 데이터 가공
+        if(corpContList.size() > 0){
+            for(CorpContractDto corpCont : corpContList){
+                CorpDto corpDto = corpService.findCorpsByCorpId(corpCont.getCorpId());
+                if(corpDto != null){
+                    CalendarDto calenda = new CalendarDto();
+
+                    calenda.setTitle(corpDto.getEventTime()+"/"+corpDto.getCorp()+"/"+corpDto.getCorpTitle());
+                    calenda.setStart(corpDto.getEventDate());
+                    calenda.setId(corpDto.getCorpId());
+                    calenda.setColor("#6f8bf2");
 
                     calendarDtoList.add(calenda);
                 }
@@ -196,6 +243,16 @@ public class RestController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
+    //기업행사 상담 메모 업데이트
+    @RequestMapping("/updateCorpDmemo")
+    public ResponseEntity<String> updateCorpDmemo(@RequestBody CorpDto reqDto){
+        CorpDto currentDto = corpService.findCorpsByCorpId(reqDto.getCorpId());
+        currentDto.setDirectingMemo(reqDto.getDirectingMemo());
+        corpService.update(currentDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
     //플라워 메모 업데이트
     @RequestMapping("/updateFmemo")
     public ResponseEntity<String> updateFmemo(@RequestBody EventDto reqDto){
@@ -206,12 +263,32 @@ public class RestController {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
+    //기업행사 플라워 메모 업데이트
+    @RequestMapping("/updateCorpFmemo")
+    public ResponseEntity<String> updateCorpFmemo(@RequestBody CorpDto reqDto){
+        CorpDto currentDto = corpService.findCorpsByCorpId(reqDto.getCorpId());
+        currentDto.setFlowerMemo(reqDto.getFlowerMemo());
+        corpService.update(currentDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
     //케이터링 메모 업데이트
     @RequestMapping("/updateCmemo")
     public ResponseEntity<String> updateCmemo(@RequestBody EventDto reqDto){
         EventDto currentDto = eventService.findEventByEventId(reqDto.getEventId());
         currentDto.setFoodMemo(reqDto.getFoodMemo());
         eventService.update(currentDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //기업행사 케이터링 메모 업데이트
+    @RequestMapping("/updateCorpCmemo")
+    public ResponseEntity<String> updateCorpCmemo(@RequestBody CorpDto reqDto){
+        CorpDto currentDto = corpService.findCorpsByCorpId(reqDto.getCorpId());
+        currentDto.setFoodMemo(reqDto.getFoodMemo());
+        corpService.update(currentDto);
 
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
@@ -284,6 +361,22 @@ public class RestController {
             reqDto.setDirectingMemo(currentDto.getDirectingMemo());
             reqDto.setFlowerMemo(currentDto.getFlowerMemo());
             reqDto.setFoodMemo(currentDto.getFoodMemo());
+            reqDto.setCancel(currentDto.getCancel());
+            reqDto.setCreateDate(currentDto.getCreateDate());
+        }
+
+
+        corpService.update(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    //corp 정보 업데이트-디렉팅
+    @RequestMapping("/updateCorpDirecting")
+    public ResponseEntity<String> updateCorpDirecting(@RequestBody CorpDto reqDto) {
+        //메모, 취소, 생성일은 기존 정보 살리기
+        CorpDto currentDto = corpService.findCorpsByCorpId(reqDto.getCorpId());
+        if (currentDto != null) {
             reqDto.setCancel(currentDto.getCancel());
             reqDto.setCreateDate(currentDto.getCreateDate());
         }
