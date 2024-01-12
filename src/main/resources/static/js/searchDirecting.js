@@ -198,7 +198,7 @@ const selDirectingData = async (eventId) => {
             //이벤트 정보 출력
             printEventInfo(response.data);
             //디렉팅 파일 출력
-            directingFileCheck(response.data.email);
+            directingFileCheck(response.data.eventId);
             //계약 항목 가젹오기
             getContractList(response.data.eventId);
         });

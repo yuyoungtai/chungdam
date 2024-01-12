@@ -16,6 +16,7 @@ public class ContractDto {
     private int total;
     private String cancel;
     private String createDate;
+    private String state;
 
     @Builder
     public ContractDto(Contract entity){

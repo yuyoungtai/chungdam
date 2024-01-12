@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DirectingRepository extends JpaRepository<Directing, Long> {
 
-    DirectingDto findDirectingByEmail(String email);
+    DirectingDto findDirectingByEventId(Long eventId);
 }

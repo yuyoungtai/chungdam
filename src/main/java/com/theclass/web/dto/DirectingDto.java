@@ -9,36 +9,36 @@ import lombok.*;
 @AllArgsConstructor
 public class DirectingDto {
     private Long directingId;
-    private String email;
-    private String plan;
-    private String siksun;
-    private String mc;
-    private String honin;
-    private String sunghon;
-    private String etc;
+    private Long eventId;
+    private String wplan;
+    private String fplan;
+    private String cplan;
+    private String dplan;
+    private String summary;
+    private String bill;
 
     @Builder
     public DirectingDto(Directing entity){
         this.directingId = entity.getDirectingId();
-        this.email = entity.getEmail();
-        this.plan = entity.getPlan();
-        this.siksun = entity.getSiksun();
-        this.mc = entity.getMc();
-        this.sunghon = entity.getSunghon();
-        this.honin = entity.getHonin();
-        this.etc = entity.getEtc();
+        this.eventId = entity.getEventId();
+        this.wplan = entity.getWplan();
+        this.fplan = entity.getFplan();
+        this.cplan = entity.getCplan();
+        this.dplan = entity.getDplan();
+        this.summary = entity.getSummary();
+        this.bill = entity.getBill();
     }
 
     public Directing toEntity(){
         return Directing.builder()
                 .directingId(directingId)
-                .email(email)
-                .plan(plan)
-                .siksun(siksun)
-                .mc(mc)
-                .honin(honin)
-                .sunghon(sunghon)
-                .etc(etc)
+                .eventId(eventId)
+                .wplan(wplan)
+                .fplan(fplan)
+                .cplan(cplan)
+                .dplan(dplan)
+                .summary(summary)
+                .bill(bill)
                 .build();
     }
 }

@@ -3,6 +3,8 @@ package com.theclass.web.dto;
 import com.theclass.domain.event.Event;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +24,7 @@ public class EventDto {
         private String cancel;
         private String createDate;
         private String email;
+        private List<ContractDto> contList;
 
         @Builder
     public EventDto(Event entity){

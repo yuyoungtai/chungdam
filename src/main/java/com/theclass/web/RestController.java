@@ -73,7 +73,7 @@ public class RestController {
     //디렉팅 파일 가져오기
     @RequestMapping("/getDirectingFile")
     public ResponseEntity<DirectingDto> getDirectingFile(@RequestBody DirectingDto reqDto){
-        DirectingDto directingDto = directingService.findDirectingByEmail(reqDto.getEmail());
+        DirectingDto directingDto = directingService.findDirectingByEventId(reqDto.getEventId());
 
         return new ResponseEntity<DirectingDto>(directingDto, HttpStatus.OK);
     }
@@ -109,74 +109,74 @@ public class RestController {
     public ResponseEntity<String> directingUpload(@RequestParam("file_data") MultipartFile file, HttpServletRequest req) throws IOException {
 
         //업로드 파일 종류
-        String type = req.getParameter("id");
+        String type = req.getParameter("type");
         //이메일
-        String email = req.getParameter("email");
+        String eventId = req.getParameter("eventId");
 
-        if (email.equals("")) {
+        if (eventId.equals("")) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             //aws s3 업로드
             //파일 이름 랜덤 생성 후 'directing/{hostEmail}/랜덤파일네임' 리턴
-            String savedFilePath = s3Uploader.upload(file, "directing/" + email);
+            String savedFilePath = s3Uploader.upload(file, "directing/" + eventId);
 
             //directing 테이블 저장.
             //기존 테이블이 있는지 검사.
-            DirectingDto currentDirectingDto = directingService.findDirectingByEmail(email);
+            DirectingDto currentDirectingDto = directingService.findDirectingByEventId(Long.valueOf(eventId));
 
             if (currentDirectingDto == null) {
                 //신규 저장.
                 currentDirectingDto = new DirectingDto();
-                currentDirectingDto.setEmail(email);
+                currentDirectingDto.setEventId(Long.valueOf(eventId));
 
-                if (type.equals("siksun")) {
-                    currentDirectingDto.setSiksun(savedFilePath);
-                } else if (type.equals("honin")) {
-                    currentDirectingDto.setHonin(savedFilePath);
-                } else if (type.equals("sunghon")) {
-                    currentDirectingDto.setSunghon(savedFilePath);
-                }else if (type.equals("plan")) {
-                    currentDirectingDto.setPlan(savedFilePath);
-                }else if (type.equals("mc")) {
-                    currentDirectingDto.setMc(savedFilePath);
+                if (type.equals("wplan")) {
+                    currentDirectingDto.setWplan(savedFilePath);
+                } else if (type.equals("fplan")) {
+                    currentDirectingDto.setFplan(savedFilePath);
+                } else if (type.equals("cplan")) {
+                    currentDirectingDto.setCplan(savedFilePath);
+                }else if (type.equals("dplan")) {
+                    currentDirectingDto.setDplan(savedFilePath);
+                }else if (type.equals("summary")) {
+                    currentDirectingDto.setSummary(savedFilePath);
                 } else {
-                    //etc
-                    currentDirectingDto.setEtc(savedFilePath);
+                    //bill
+                    currentDirectingDto.setBill(savedFilePath);
                 }
                 //테이블 저장.
                 directingService.save(currentDirectingDto);
             } else {
                 //기존 정보 업데이트하고 기존 파일은 삭제처리
-                if (type.equals("siksun")) {
-                    if (currentDirectingDto.getSiksun() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getSiksun());
+                if (type.equals("wplan")) {
+                    if (currentDirectingDto.getWplan() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getWplan());
                     }
-                    currentDirectingDto.setSiksun(savedFilePath);
-                } else if (type.equals("honin")) {
-                    if (currentDirectingDto.getHonin() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getHonin());
+                    currentDirectingDto.setWplan(savedFilePath);
+                } else if (type.equals("fplan")) {
+                    if (currentDirectingDto.getFplan() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getFplan());
                     }
-                    currentDirectingDto.setHonin(savedFilePath);
-                } else if (type.equals("sunghon")) {
-                    if (currentDirectingDto.getSunghon() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getSunghon());
+                    currentDirectingDto.setFplan(savedFilePath);
+                } else if (type.equals("cplan")) {
+                    if (currentDirectingDto.getCplan() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getCplan());
                     }
-                    currentDirectingDto.setSunghon(savedFilePath);
-                } else if (type.equals("plan")) {
-                    if (currentDirectingDto.getPlan() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getPlan());
+                    currentDirectingDto.setCplan(savedFilePath);
+                } else if (type.equals("dplan")) {
+                    if (currentDirectingDto.getDplan() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getDplan());
                     }
-                    currentDirectingDto.setPlan(savedFilePath);
-                }else if (type.equals("mc")) {
-                    if (currentDirectingDto.getMc() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getMc());
+                    currentDirectingDto.setDplan(savedFilePath);
+                }else if (type.equals("summary")) {
+                    if (currentDirectingDto.getSummary() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getSummary());
                     }
-                    currentDirectingDto.setMc(savedFilePath);
+                    currentDirectingDto.setSummary(savedFilePath);
                 } else {
-                    if (currentDirectingDto.getMc() != null) {
-                        s3Uploader.delOneThumb(currentDirectingDto.getMc());
+                    if (currentDirectingDto.getBill() != null) {
+                        s3Uploader.delOneThumb(currentDirectingDto.getBill());
                     }
-                    currentDirectingDto.setMc(savedFilePath);
+                    currentDirectingDto.setBill(savedFilePath);
                 }
                 directingService.update(currentDirectingDto);
             }
@@ -398,7 +398,14 @@ public class RestController {
     //계약항목 불러오기
     @RequestMapping("/findContListByEventId")
     public ResponseEntity<List<ContractDto>> findContListByEventId(@RequestBody ContractDto reqDto) {
+
         List<ContractDto> currentList = contractService.findContractsByEventId(reqDto.getEventId());
+
+        if(currentList.size() > 0){
+            for(ContractDto cont : currentList){
+                cont.setState("등록됨");
+            }
+        }
 
         return new ResponseEntity<List<ContractDto>>(currentList, HttpStatus.OK);
     }
@@ -493,10 +500,17 @@ public class RestController {
     @RequestMapping("/addNewEvent")
     public ResponseEntity<String> addNewEvent(@RequestBody EventDto reqDto) {
         //기존에 동일한 정보가 있는지 체크
-        List<EventDto> currentList = eventService.findEventsByTel(reqDto.getGroomHp());
-        if (currentList.size() > 0) {
-            return new ResponseEntity<String>("groomHp", HttpStatus.OK);
-        } else {
+        List<EventDto> currentList = new ArrayList<EventDto>();
+
+        if(!reqDto.getGroomHp().equals("010")){
+            currentList = eventService.findEventsByTel(reqDto.getGroomHp());
+
+            if (currentList.size() > 0) {
+                return new ResponseEntity<String>("groomHp", HttpStatus.OK);
+            }
+        }
+
+        if(!reqDto.getBrideHp().equals("010")){
             currentList = eventService.findEventsByTel(reqDto.getBrideHp());
             if (currentList.size() > 0) {
                 return new ResponseEntity<String>("brideHp", HttpStatus.OK);
@@ -507,6 +521,14 @@ public class RestController {
         String toDay = LocalDate.now().toString();
         reqDto.setCreateDate(toDay);
         Long savedId = eventService.save(reqDto);
+
+        //초기 계약항목(대관&연출) 등록
+        if(reqDto.getContList().size() > 0){
+            for(ContractDto cont : reqDto.getContList()){
+                cont.setEventId(savedId);
+                contractService.save(cont);
+            }
+        }
 
         return new ResponseEntity<String>(String.valueOf(savedId), HttpStatus.OK);
     }

@@ -14,8 +14,8 @@ public class DirectingService {
     private final DirectingRepository repository;
 
     @Transactional
-    public DirectingDto findDirectingByEmail(String email){
-        return repository.findDirectingByEmail(email);
+    public DirectingDto findDirectingByEventId(Long eventId){
+        return repository.findDirectingByEventId(eventId);
     }
 
     @Transactional

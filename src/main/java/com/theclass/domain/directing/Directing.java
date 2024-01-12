@@ -21,47 +21,47 @@ public class Directing {
     @Column(name="directing_id")
     private Long directingId;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
-    private String email;
+    @Column(name="event_id", nullable = false, columnDefinition = "VBICINT(11)")
+    private Long eventId;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String plan;
+    private String wplan;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String siksun;
+    private String fplan;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String mc;
+    private String cplan;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String sunghon;
+    private String dplan;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String honin;
+    private String summary;
 
     @Column(columnDefinition = "VARCHAR(255)")
-    private String etc;
+    private String bill;
 
     @Builder
-    public Directing(Long directingId, String email, String plan, String mc, String siksun, String honin, String sunghon, String etc){
+    public Directing(Long directingId, Long eventId, String email, String wplan, String fplan, String cplan, String dplan, String summary, String bill){
         this.directingId = directingId;
-        this.email = email;
-        this.plan = plan;
-        this.siksun = siksun;
-        this.mc = mc;
-        this.sunghon = sunghon;
-        this.honin = honin;
-        this.etc = etc;
+        this.eventId = eventId;
+        this.wplan = wplan;
+        this.fplan = fplan;
+        this.cplan = cplan;
+        this.dplan = dplan;
+        this.summary = summary;
+        this.bill = bill;
     }
 
     public void update(DirectingDto dto){
         this.directingId = dto.getDirectingId();
-        this.email = dto.getEmail();
-        this.plan = dto.getPlan();
-        this.siksun = dto.getSiksun();
-        this.mc = dto.getMc();
-        this.honin = dto.getHonin();
-        this.sunghon = dto.getSunghon();
-        this.etc = dto.getEtc();
+        this.eventId = dto.getEventId();
+        this.wplan = dto.getWplan();
+        this.fplan = dto.getFplan();
+        this.cplan = dto.getCplan();
+        this.dplan = dto.getDplan();
+        this.summary = dto.getSummary();
+        this.bill = dto.getBill();
     }
 }
