@@ -31,6 +31,14 @@ public class RestController {
     private final DirectingService directingService;
     private final CorpService corpService;
     private final CorpContractService corpContractService;
+    private final VisitService visitService;
+
+    @RequestMapping("/addVisit")
+    public ResponseEntity<String> addVisit(@RequestBody VisitDto reqDto){
+        visitService.save(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
 
     @RequestMapping("/searchCorpByCorpHp")
     public ResponseEntity<List<CorpDto>> searchCorpByCorpHp(@RequestBody CorpDto reqDto){
