@@ -33,6 +33,48 @@ public class RestController {
     private final CorpContractService corpContractService;
     private final VisitService visitService;
 
+    @RequestMapping("/findUserInfoById")
+    public ResponseEntity<UserDto> findUserInfoById(@RequestBody UserDto reqDto){
+        UserDto currentDto = userService.findUserByUserId(reqDto.getUserId());
+
+        return new ResponseEntity<UserDto>(currentDto, HttpStatus.OK);
+    }
+
+    @RequestMapping("/delUser")
+    public ResponseEntity<String> delUser(@RequestBody UserDto reqDto){
+        userService.delete(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    @RequestMapping("/updateUserInfo")
+    public ResponseEntity<String> updateUserInfo(@RequestBody UserDto reqDto){
+        userService.update(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    @RequestMapping("/delVisit")
+    public ResponseEntity<String> delVisit(@RequestBody VisitDto reqDto){
+        visitService.delete(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
+    @RequestMapping("/findVisitInfoById")
+    public ResponseEntity<VisitDto> findVisitInfoById(@RequestBody VisitDto reqDto){
+        VisitDto currentDto = visitService.findVisitByVisitId(reqDto.getVisitId());
+
+        return new ResponseEntity<VisitDto>(currentDto, HttpStatus.OK);
+    }
+
+    @RequestMapping("/updateVisit")
+    public ResponseEntity<String> updateVisit(@RequestBody VisitDto reqDto){
+        visitService.update(reqDto);
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+
     @RequestMapping("/addVisit")
     public ResponseEntity<String> addVisit(@RequestBody VisitDto reqDto){
         visitService.save(reqDto);

@@ -26,6 +26,7 @@
         <div class="col fw-bold">예약경로</div>
         <div class="col fw-bold">비고</div>
         <div class="col fw-bold">확인자</div>
+        <div class="col fw-bold">수정</div>
     </div>
     <hr>
     <div id="current-list-wrap">
@@ -42,6 +43,7 @@
                 <div class="col">{{path}}</div>
                 <div class="col">{{memo}}</div>
                 <div class="col">{{masterName}}<br>{{masterDate}}</div>
+                <div class="col"><button class="btn btn-sm btn-success" onclick="editBtn('{{visitId}}');">수정</button></div>
             </div>
         {{/list}}
     </div>
@@ -165,6 +167,143 @@
     </div>
 </div>
 <!--신규 상담 등록 모달 END -->
+
+<!--상담 수정 등록 모달 -->
+<div id="edit-consuling-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">상담 정보 수정</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-wrap">
+                    <h4 class="mb-2 mt-4">상담 유형</h4>
+                    <div class="col-12 d-flex">
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit-consulting-type" id="edit-type1" title="일반상담" checked>
+                                <label class="form-check-label" for="edit-type1">
+                                    일반상담
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit-consulting-type" id="edit-type2" title="본식상담">
+                                <label class="form-check-label" for="edit-type2">
+                                    본식상담
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit-consulting-type" id="edit-type3" title="시식상담">
+                                <label class="form-check-label" for="edit-type3">
+                                    시식상담
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit-consulting-type" id="edit-type4" title="본식 ZOOM">
+                                <label class="form-check-label" for="edit-type4">
+                                    본식 ZOOM
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit-consulting-type" id="edit-type5" title="1주년">
+                                <label class="form-check-label" for="edit-type5">
+                                    1주년
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit-consulting-type" id="edit-type6">
+                                <label class="form-check-label" for="edit-type6">
+                                    기타
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input id="edit-etc-type" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div><!--상담유형 END-->
+
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">방문 날짜</h4>
+                        <div class="col"><input id="edit-visit-date" type="date" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">방문 시간</h4>
+                        <div class="col"><input id="edit-visit-time" type="time" class="form-control"></div>
+                    </div>
+
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">성함</h4>
+                        <div class="col"><input id="edit-guest-name" type="text" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">연락처</h4>
+                        <div class="col"><input id="edit-guest-hp" type="text" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">예식일</h4>
+                        <div class="col"><input id="edit-event-date" type="date" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">인 원</h4>
+                        <div class="col"><input id="edit-person" type="text" class="form-control"></div>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <h4 class="mb-2">비교업장 및 참고사항</h4>
+                        <div class="col"><input id="edit-check-memo" type="text" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">예약경로</h4>
+                        <div class="col"><input id="edit-path" type="text" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">예약 확인자</h4>
+                        <div class="col"><input id="edit-master-name" type="text" class="form-control"></div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <h4 class="mb-2">확인 날짜</h4>
+                        <div class="col"><input id="edit-master-date" type="date" class="form-control"></div>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <h4 class="mb-2">비고</h4>
+                        <div class="col"><textarea id="edit-etc-memo" class="form-control" rows="2"></textarea></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫 기</button>
+                <button type="button" class="btn btn-danger" onclick="delModal();">삭 제</button>
+                <button type="button" class="btn btn-primary" onclick="updateVisit();">저 장</button>
+                <input id="edit-id" type="hidden">
+            </div>
+        </div>
+    </div>
+</div>
+<!--상담 수정 모달 END -->
+
+<!-- 삭제 확인 모달 -->
+<div id="del-confirm-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">방문상담 삭제</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>선택하신 상담을 삭제하시겠습니까?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취 소</button>
+                <button type="button" class="btn btn-danger" onclick="delVisit();">삭 제</button>
+                <input id="del-id" type="hidden">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 삭제 확인 모달 END -->
 
 {{>layout/indexFooter}}
 <script src="/js/consultingManager.js"></script>

@@ -44,6 +44,7 @@ public class User {
 
     public void update(UserDto dto){
         this.userId = dto.getUserId();
+        this.email = dto.getEmail();
         this.name = dto.getName();
         this.hp = dto.getHp();
         this.pass = dto.getPass();
