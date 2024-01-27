@@ -33,6 +33,24 @@ public class RestController {
     private final CorpContractService corpContractService;
     private final VisitService visitService;
 
+    //기간별 기업 행사 검색
+    @RequestMapping("/findCorpByPeriod")
+    public ResponseEntity<List<CorpDto>> findCorpByPeriod(@RequestBody CorpDto reqDto){
+
+        List<CorpDto> result = corpService.findCorpsByPeriod(reqDto.getStartDate(), reqDto.getEndDate());
+
+        return new ResponseEntity<List<CorpDto>>(result, HttpStatus.OK);
+    }
+
+    //기간별 웨딩 행사 검색
+    @RequestMapping("/findWeddingByPeriod")
+    public ResponseEntity<List<EventDto>> findWeddingByPeriod(@RequestBody EventDto reqDto){
+
+        List<EventDto> result = eventService.findEventsByPeriod(reqDto.getStartDate(), reqDto.getEndDate());
+
+        return new ResponseEntity<List<EventDto>>(result, HttpStatus.OK);
+    }
+
     @RequestMapping("/findUserInfoById")
     public ResponseEntity<UserDto> findUserInfoById(@RequestBody UserDto reqDto){
         UserDto currentDto = userService.findUserByUserId(reqDto.getUserId());

@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
+    @Query("SELECT e FROM Event AS e WHERE e.eventDate BETWEEN :startDate AND :endDate ORDER BY e.eventDate ASC")
+    List<EventDto> findEventsByPeriod(String startDate, String endDate);
+
     List<EventDto> findEventsByEmail(String email);
 
     @Query("SELECT e FROM Event AS e WHERE e.groomHp LIKE %:hp OR e.brideHp LIKE %:hp")

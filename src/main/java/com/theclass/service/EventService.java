@@ -15,6 +15,11 @@ public class EventService {
     private final EventRepository repository;
 
     @Transactional
+    public List<EventDto> findEventsByPeriod(String startDate, String endDate){
+        return repository.findEventsByPeriod(startDate, endDate);
+    }
+
+    @Transactional
     public void update(EventDto dto){
         Event entity = repository.findById(dto.getEventId()).get();
         entity.update(dto);

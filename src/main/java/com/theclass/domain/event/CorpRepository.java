@@ -16,4 +16,7 @@ public interface CorpRepository extends JpaRepository<Corp, Long> {
 
     @Query("SELECT c FROM Corp AS c WHERE c.guestHp LIKE %:guestHp")
     List<CorpDto> findCorpsByGuestHp(String guestHp);
+
+    @Query("SELECT c FROM Corp AS c WHERE c.eventDate BETWEEN :startDate AND :endDate ORDER BY c.eventDate ASC")
+    List<CorpDto> findCorpsByPeriod(String startDate, String endDate);
 }

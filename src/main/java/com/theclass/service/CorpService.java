@@ -45,4 +45,9 @@ public class CorpService {
         Corp entity = repository.findById(dto.getCorpId()).get();
         entity.update(dto);
     }
+
+    @Transactional
+    public List<CorpDto> findCorpsByPeriod(String startDate, String endDate){
+        return repository.findCorpsByPeriod(startDate, endDate);
+    }
 }

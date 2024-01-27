@@ -23,6 +23,8 @@ public class CorpDto {
     private String flowerMemo;
     private String foodMemo;
     private String createDate;
+    private String startDate;
+    private String endDate;
 
     @Builder
     public CorpDto(Corp entity){

@@ -1,0 +1,55 @@
+{{>layout/indexHeader}}
+<body>
+<section id="page-title" class="page-title mb-5">
+    <div class="container clearfix">
+        <h1>메시지 발송</h1>
+    </div>
+</section>
+
+<section class="px-5 my-5">
+    <h3 class="mb-2">수신 대상 검색</h3>
+    <p class="mb-3">행사일을 기준으로 수신 대상을 검색할 수 있습니다.</p>
+    <p class="mb-1">1. 수신 대상을 검색후 수신대상에 '체크'하세요.</p>
+    <p>2. '메시지 입력' 버튼을 눌러서 메시지를 작성 후 발송하세요.</p>
+    <div class="form-check py-3">
+        <input class="form-check-input" type="checkbox" value="" id="corp-filter-check">
+        <label class="form-check-label" for="corp-filter-check">
+            기업행사 검색시 체크
+        </label>
+    </div>
+    <div class="d-flex flex-wrap align-items-center">
+        <span class="col-1">시작 일자</span>
+        <div class="col-2">
+            <input id="start-date" class="form-control" type="date"/>
+        </div>
+        <span class="col-1 ms-5">종료 일자</span>
+        <div class="col-2">
+            <input id="end-date" class="form-control col-2" type="date"/>
+        </div>
+        <button id="search-btn" type="button" class="btn btn-oding text-white col-1 mx-2" onclick="searchCustomer();">검
+            색
+        </button>
+        <button class="btn btn-y-oding text-white col-2" type="button" data-bs-toggle="modal"
+                data-bs-target="#msg-modal">메시지 입력
+        </button>
+    </div>
+</section>
+
+<section class="px-5 my-5">
+    <div id="result-header"></div>
+    <div id="result-wrap" class="my-5"></div>
+</section>
+
+
+{{>layout/indexFooter}}
+<script src="/js/smsManager.js"></script>
+<script type="text/javascript">
+    const itemMenuListEle = document.getElementsByClassName('menu-item');
+    for (const itemMenu of itemMenuListEle) {
+        itemMenu.classList.remove('current');
+    }
+
+    document.querySelector('#sms-menu').classList.add('current');
+</script>
+</body>
+</html>

@@ -25,6 +25,8 @@ public class EventDto {
         private String createDate;
         private String email;
         private List<ContractDto> contList;
+        private String startDate;
+        private String endDate;
 
         @Builder
     public EventDto(Event entity){

@@ -24,6 +24,16 @@ public class ViewController {
     private final VisitService visitService;
     private final HttpSession httpSession;
 
+    @RequestMapping("/smsManager")
+    public String smsManager(){
+        String email = (String)httpSession.getAttribute("user");
+
+        if(email != null){
+            httpSession.invalidate();
+        }
+        return "/smsManager";
+    }
+
     @RequestMapping("/logout")
     public String logout(){
         String email = (String)httpSession.getAttribute("user");
