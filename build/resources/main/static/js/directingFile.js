@@ -1,16 +1,16 @@
-//기획서 업로드 리스너
-$('#plan').fileinput({
+//웨딩팀 기획서 업로드 리스너
+$('#wplan').fileinput({
     uploadUrl: '/directingUpload',
     uploadExtraData:function (previewId, index){
         const data = {
-            id: 'plan',
-            email: document.querySelector('#email').value
+            type: 'wplan',
+            eventId: document.querySelector('#sel-event-id').value
         };
         return data;
     },
     maxFileSize: 1073741824
 }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
-    directingFileCheck(document.querySelector('#email').value);
+    directingFileCheck(document.querySelector('#sel-event-id').value);
 }).on('fileselect', function (event, numFiles, label){
     const fileSize = event.target.files[0].size;
     if(fileSize > 1073741824){
@@ -18,19 +18,19 @@ $('#plan').fileinput({
     }
 });
 
-//식순 업로드 리스너
-$('#siksun').fileinput({
+//플라워팀 기획서 업로드 리스너
+$('#fplan').fileinput({
     uploadUrl: '/directingUpload',
     uploadExtraData:function (previewId, index){
         const data = {
-            id: 'siksun',
-            email: document.querySelector('#email').value
+            type: 'fplan',
+            eventId: document.querySelector('#sel-event-id').value
         };
         return data;
     },
     maxFileSize: 1073741824
 }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
-    directingFileCheck(document.querySelector('#email').value);
+    directingFileCheck(document.querySelector('#sel-event-id').value);
 }).on('fileselect', function (event, numFiles, label){
     const fileSize = event.target.files[0].size;
     if(fileSize > 1073741824){
@@ -38,19 +38,19 @@ $('#siksun').fileinput({
     }
 });
 
-//사회자 스크립트 업로드 리스너
-$('#mc').fileinput({
+//조리팀 기획서 업로드 리스너
+$('#cplan').fileinput({
     uploadUrl: '/directingUpload',
     uploadExtraData:function (previewId, index){
         const data = {
-            id: 'mc',
-            email: document.querySelector('#email').value
+            type: 'cplan',
+            eventId: document.querySelector('#sel-event-id').value
         };
         return data;
     },
     maxFileSize: 1073741824
 }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
-    directingFileCheck(document.querySelector('#email').value);
+    directingFileCheck(document.querySelector('#sel-event-id').value);
 }).on('fileselect', function (event, numFiles, label){
     const fileSize = event.target.files[0].size;
     if(fileSize > 1073741824){
@@ -58,19 +58,19 @@ $('#mc').fileinput({
     }
 });
 
-//혼인서약서 업로드 리스너
-$('#honin').fileinput({
+//연회팀 기획서 업로드 리스너
+$('#dplan').fileinput({
     uploadUrl: '/directingUpload',
     uploadExtraData:function (previewId, index){
         const data = {
-            id: 'honin',
-            email: document.querySelector('#email').value
+            type: 'dplan',
+            eventId: document.querySelector('#sel-event-id').value
         };
         return data;
     },
     maxFileSize: 1073741824
 }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
-    directingFileCheck(document.querySelector('#email').value);
+    directingFileCheck(document.querySelector('#sel-event-id').value);
 }).on('fileselect', function (event, numFiles, label){
     const fileSize = event.target.files[0].size;
     if(fileSize > 1073741824){
@@ -78,19 +78,19 @@ $('#honin').fileinput({
     }
 });
 
-//성혼선언문 업로드 리스너
-$('#sunghon').fileinput({
+//행사 진행표 업로드 리스너
+$('#summary').fileinput({
     uploadUrl: '/directingUpload',
     uploadExtraData:function (previewId, index){
         const data = {
-            id: 'sunghon',
-            email: document.querySelector('#email').value
+            type: 'summary',
+            eventId: document.querySelector('#sel-event-id').value
         };
         return data;
     },
     maxFileSize: 1073741824
 }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
-    directingFileCheck(document.querySelector('#email').value);
+    directingFileCheck(document.querySelector('#sel-event-id').value);
 }).on('fileselect', function (event, numFiles, label){
     const fileSize = event.target.files[0].size;
     if(fileSize > 1073741824){
@@ -98,111 +98,112 @@ $('#sunghon').fileinput({
     }
 });
 
-//기타 업로드 리스너
-$('#etc').fileinput({
+//정산서 업로드 리스너
+$('#bill').fileinput({
     uploadUrl: '/directingUpload',
     uploadExtraData:function (previewId, index){
         const data = {
-            id: 'etc',
-            email: document.querySelector('#email').value
+            type: 'bill',
+            eventId: document.querySelector('#sel-event-id').value
         };
         return data;
     },
     maxFileSize: 1073741824
 }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
-    directingFileCheck(document.querySelector('#email').value);
+    directingFileCheck(document.querySelector('#sel-event-id').value);
 }).on('fileselect', function (event, numFiles, label){
     const fileSize = event.target.files[0].size;
     if(fileSize > 1073741824){
         alert('1기가 이하의 파일만 업로드 할 수 있습니다.');
     }
 });
+
 
 //디렉팅 파일 가져오기
-const directingFileCheck = async (email) => {
+const directingFileCheck = async (eventId) => {
     try{
         await axios.post('/getDirectingFile', {
-            email
+            eventId
         }).then(response => {
 
             if(response.data.length === 0){
-                document.querySelector('#plan-switch').checked = false;
-                document.querySelector('#plan-down-btn1').removeAttribute('src');
-                document.querySelector('#plan-down-btn2').removeAttribute('src');
+                document.querySelector('#wplan-switch').checked = false;
+                document.querySelector('#wplan-down-btn1').removeAttribute('src');
+                document.querySelector('#wplan-down-btn2').removeAttribute('src');
 
-                document.querySelector('#siksun-switch').checked = false;
-                document.querySelector('#siksun-down-btn1').removeAttribute('src');
-                document.querySelector('#siksun-down-btn2').removeAttribute('src');
+                document.querySelector('#fplan-switch').checked = false;
+                document.querySelector('#fplan-down-btn1').removeAttribute('src');
+                document.querySelector('#fplan-down-btn2').removeAttribute('src');
 
-                document.querySelector('#mc-switch').checked = false;
-                document.querySelector('#mc-down-btn1').removeAttribute('src');
-                document.querySelector('#mc-down-btn2').removeAttribute('src');
+                document.querySelector('#cplan-switch').checked = false;
+                document.querySelector('#cplan-down-btn1').removeAttribute('src');
+                document.querySelector('#cplan-down-btn2').removeAttribute('src');
 
-                document.querySelector('#honin-switch').checked = false;
-                document.querySelector('#honin-down-btn1').removeAttribute('src');
-                document.querySelector('#honin-down-btn2').removeAttribute('src');
+                document.querySelector('#dplan-switch').checked = false;
+                document.querySelector('#dplan-down-btn1').removeAttribute('src');
+                document.querySelector('#dplan-down-btn2').removeAttribute('src');
 
-                document.querySelector('#sunghon-switch').checked = false;
-                document.querySelector('#sunghon-down-btn1').removeAttribute('src');
-                document.querySelector('#sunghon-down-btn2').removeAttribute('src');
+                document.querySelector('#summary-switch').checked = false;
+                document.querySelector('#summary-down-btn1').removeAttribute('src');
+                document.querySelector('#summary-down-btn2').removeAttribute('src');
 
-                document.querySelector('#etc-switch').checked = false;
-                document.querySelector('#etc-down-btn1').removeAttribute('src');
-                document.querySelector('#etc-down-btn2').removeAttribute('src');
+                document.querySelector('#bill-switch').checked = false;
+                document.querySelector('#bill-down-btn1').removeAttribute('src');
+                document.querySelector('#bill-down-btn2').removeAttribute('src');
             }else{
-                if(response.data.plan === null){
-                    document.querySelector('#plan-switch').checked = false;
-                    document.querySelector('#plan-down-btn1').removeAttribute('src');
-                    document.querySelector('#plan-down-btn2').removeAttribute('src');
+                if(response.data.wplan === null){
+                    document.querySelector('#wplan-switch').checked = false;
+                    document.querySelector('#wplan-down-btn1').removeAttribute('src');
+                    document.querySelector('#wplan-down-btn2').removeAttribute('src');
                 }else{
-                    document.querySelector('#plan-switch').checked = true;
-                    document.querySelector('#plan-down-btn1').setAttribute('src', response.data.plan);
-                    document.querySelector('#plan-down-btn2').setAttribute('src', response.data.plan);
+                    document.querySelector('#wplan-switch').checked = true;
+                    document.querySelector('#wplan-down-btn1').setAttribute('src', response.data.wplan);
+                    document.querySelector('#wplan-down-btn2').setAttribute('src', response.data.wplan);
                 }
-                if(response.data.siksun === null){
-                    document.querySelector('#siksun-switch').checked = false;
-                    document.querySelector('#siksun-down-btn1').removeAttribute('src');
-                    document.querySelector('#siksun-down-btn2').removeAttribute('src');
+                if(response.data.fplan === null){
+                    document.querySelector('#fplan-switch').checked = false;
+                    document.querySelector('#fplan-down-btn1').removeAttribute('src');
+                    document.querySelector('#fplan-down-btn2').removeAttribute('src');
                 }else{
-                    document.querySelector('#siksun-switch').checked = true;
-                    document.querySelector('#siksun-down-btn1').setAttribute('src', response.data.siksun);
-                    document.querySelector('#siksun-down-btn2').setAttribute('src', response.data.siksun);
+                    document.querySelector('#fplan-switch').checked = true;
+                    document.querySelector('#fplan-down-btn1').setAttribute('src', response.data.fplan);
+                    document.querySelector('#fplan-down-btn2').setAttribute('src', response.data.fplan);
                 }
-                if(response.data.mc === null){
-                    document.querySelector('#mc-switch').checked = false;
-                    document.querySelector('#mc-down-btn1').removeAttribute('src');
-                    document.querySelector('#mc-down-btn2').removeAttribute('src');
+                if(response.data.cplan === null){
+                    document.querySelector('#cplan-switch').checked = false;
+                    document.querySelector('#cplan-down-btn1').removeAttribute('src');
+                    document.querySelector('#cplan-down-btn2').removeAttribute('src');
                 }else{
-                    document.querySelector('#mc-switch').checked = true;
-                    document.querySelector('#mc-down-btn1').setAttribute('src', response.data.mc);
-                    document.querySelector('#mc-down-btn2').setAttribute('src', response.data.mc);
+                    document.querySelector('#cplan-switch').checked = true;
+                    document.querySelector('#cplan-down-btn1').setAttribute('src', response.data.cplan);
+                    document.querySelector('#cplan-down-btn2').setAttribute('src', response.data.cplan);
                 }
-                if(response.data.honin === null){
-                    document.querySelector('#honin-switch').checked = false;
-                    document.querySelector('#honin-down-btn1').removeAttribute('src');
-                    document.querySelector('#honin-down-btn2').removeAttribute('src');
+                if(response.data.dplan === null){
+                    document.querySelector('#dplan-switch').checked = false;
+                    document.querySelector('#dplan-down-btn1').removeAttribute('src');
+                    document.querySelector('#dplan-down-btn2').removeAttribute('src');
                 }else{
-                    document.querySelector('#honin-switch').checked = true;
-                    document.querySelector('#honin-down-btn1').setAttribute('src', response.data.honin);
-                    document.querySelector('#honin-down-btn2').setAttribute('src', response.data.honin);
+                    document.querySelector('#dplan-switch').checked = true;
+                    document.querySelector('#dplan-down-btn1').setAttribute('src', response.data.dplan);
+                    document.querySelector('#dplan-down-btn2').setAttribute('src', response.data.dplan);
                 }
-                if(response.data.sunghon === null){
-                    document.querySelector('#sunghon-switch').checked = false;
-                    document.querySelector('#sunghon-down-btn1').removeAttribute('src');
-                    document.querySelector('#sunghon-down-btn2').removeAttribute('src');
+                if(response.data.summary === null){
+                    document.querySelector('#summary-switch').checked = false;
+                    document.querySelector('#summary-down-btn1').removeAttribute('src');
+                    document.querySelector('#summary-down-btn2').removeAttribute('src');
                 }else{
-                    document.querySelector('#sunghon-switch').checked = true;
-                    document.querySelector('#sunghon-down-btn1').setAttribute('src', response.data.sunghon);
-                    document.querySelector('#sunghon-down-btn2').setAttribute('src', response.data.sunghon);
+                    document.querySelector('#summary-switch').checked = true;
+                    document.querySelector('#summary-down-btn1').setAttribute('src', response.data.summary);
+                    document.querySelector('#summary-down-btn2').setAttribute('src', response.data.summary);
                 }
-                if(response.data.etc === null){
-                    document.querySelector('#etc-switch').checked = false;
-                    document.querySelector('#etc-down-btn1').removeAttribute('src');
-                    document.querySelector('#etc-down-btn2').removeAttribute('src');
+                if(response.data.bill === null){
+                    document.querySelector('#bill-switch').checked = false;
+                    document.querySelector('#bill-down-btn1').removeAttribute('src');
+                    document.querySelector('#bill-down-btn2').removeAttribute('src');
                 }else{
-                    document.querySelector('#etc-switch').checked = true;
-                    document.querySelector('#etc-down-btn1').setAttribute('src', response.data.etc);
-                    document.querySelector('#etc-down-btn2').setAttribute('src', response.data.etc);
+                    document.querySelector('#bill-switch').checked = true;
+                    document.querySelector('#bill-down-btn1').setAttribute('src', response.data.bill);
+                    document.querySelector('#bill-down-btn2').setAttribute('src', response.data.bill);
                 }
             }
         });

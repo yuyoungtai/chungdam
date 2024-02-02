@@ -1,6 +1,7 @@
 package com.theclass.web;
 
 import com.theclass.service.*;
+import com.theclass.utill.Message;
 import com.theclass.utill.S3Uploader;
 import com.theclass.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,41 @@ public class RestController {
     private final CorpService corpService;
     private final CorpContractService corpContractService;
     private final VisitService visitService;
+    private final Message message;
+
+    //메시지 발송
+    @RequestMapping("/sendDM")
+    public ResponseEntity<String> sendDM(@RequestBody List<SmsDto> reqDtoList) throws Exception {
+        if(reqDtoList.size() > 0){
+
+            String msg = reqDtoList.get(0).getMsg();
+            String type = reqDtoList.get(0).getType();
+            String receiver = "";
+
+            if(type.equals("corp")){
+                //기업행사
+                for(SmsDto dto : reqDtoList){
+                    receiver += corpService.findCorpsByCorpId(dto.getId()).getGuestHp();
+                    receiver += ",";
+                }
+                //마지막 콤마 제거
+                receiver = receiver.substring(0, receiver.length() - 1);
+            }else{
+                //웨딩 이벤트
+                for(SmsDto dto : reqDtoList){
+                    receiver += eventService.findEventByEventId(dto.getId()).getBrideHp();
+                    receiver +=",";
+                    receiver += eventService.findEventByEventId(dto.getId()).getGroomHp();
+                    receiver +=",";
+                }
+                //마지막 콤마 제거
+                receiver = receiver.substring(0, receiver.length() - 1);
+            }
+            message.sendSMS(receiver, msg);
+        }
+
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
 
     //기간별 기업 행사 검색
     @RequestMapping("/findCorpByPeriod")
@@ -147,7 +183,6 @@ public class RestController {
     }
 
     //기업행사-사업자등록증 업로드
-    @Transactional
     @RequestMapping("/uploadCorpDoc")
     public ResponseEntity<String> uploadCorpDoc(@RequestParam("file_data") MultipartFile file, HttpServletRequest req)throws IOException{
         //업로드 파일 종류
@@ -172,7 +207,6 @@ public class RestController {
     }
 
     //디렉팅 파일 업로드
-    @Transactional
     @RequestMapping("/directingUpload")
     public ResponseEntity<String> directingUpload(@RequestParam("file_data") MultipartFile file, HttpServletRequest req) throws IOException {
 
@@ -268,13 +302,39 @@ public class RestController {
         if(contList.size() > 0){
             for(ContractDto cont : contList){
                 EventDto eventDto = eventService.findEventByEventId(cont.getEventId());
+                String foodType = "";
+                String foodCount = "";
+
+                List<ContractDto> imsiContList = contractService.findContractsByEventId(cont.getEventId());
+                if(imsiContList.size() > 0){
+                    for(ContractDto imsiCont : imsiContList){
+                        if(imsiCont.getProdTitle().contains("뷔페")){
+                            foodType = "뷔페";
+                            foodCount = String.valueOf(imsiCont.getCount());
+                        }else if(imsiCont.getProdTitle().contains("코스")){
+                            foodType = "코스";
+                            foodCount = String.valueOf(imsiCont.getCount());
+                        }
+                    }
+                }
+
                 if(eventDto != null){
                     CalendarDto calenda = new CalendarDto();
 
                     calenda.setTitle(eventDto.getEventTime()+"/"+eventDto.getGroom()+"/"+eventDto.getBride());
                     calenda.setStart(eventDto.getEventDate());
                     calenda.setId(eventDto.getEventId());
-                    calenda.setColor("#e08282");
+                    calenda.setBgColor("웨딩");
+
+                    if(foodType.equals("뷔페")){
+                        calenda.setColor("#e08282");
+                        calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-B");
+                    }else if(foodType.equals("코스")){
+                        calenda.setColor("#6f8bf2");
+                        calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-C");
+                    }else{
+                        calenda.setColor("#000000");
+                    }
 
                     calendarDtoList.add(calenda);
                 }
@@ -283,15 +343,43 @@ public class RestController {
 
         //기업행사 데이터 가공
         if(corpContList.size() > 0){
+            String foodType = "";
+            String foodCount = "";
+
             for(CorpContractDto corpCont : corpContList){
                 CorpDto corpDto = corpService.findCorpsByCorpId(corpCont.getCorpId());
+
+                List<CorpContractDto> imsiCorpContList = corpContractService.findCorpContractsByCorpId(corpCont.getCorpId());
+                if(imsiCorpContList.size() > 0){
+                    for(CorpContractDto imsiCorp : imsiCorpContList){
+                        if(imsiCorp.getProdTitle().contains("뷔페")){
+                            foodType = "뷔페";
+                            foodCount = String.valueOf(imsiCorp.getCount());
+                        }else if(imsiCorp.getProdTitle().contains("코스")){
+                            foodType = "코스";
+                            foodCount = String.valueOf(imsiCorp.getCount());
+                        }
+                    }
+                }
+
                 if(corpDto != null){
                     CalendarDto calenda = new CalendarDto();
 
                     calenda.setTitle(corpDto.getEventTime()+"/"+corpDto.getCorp()+"/"+corpDto.getCorpTitle());
                     calenda.setStart(corpDto.getEventDate());
                     calenda.setId(corpDto.getCorpId());
-                    calenda.setColor("#6f8bf2");
+                    calenda.setBgColor("기업");
+
+                    if(foodType.equals("뷔페")){
+                        calenda.setColor("#e08282");
+                        calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-B");
+                    }else if(foodType.equals("코스")){
+                        calenda.setColor("#6f8bf2");
+                        calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-C");
+                    }
+                    else{
+                        calenda.setColor("#000000");
+                    }
 
                     calendarDtoList.add(calenda);
                 }

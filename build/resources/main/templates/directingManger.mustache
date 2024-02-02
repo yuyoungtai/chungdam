@@ -34,12 +34,17 @@
 
 <!--캘린더 섹션 -->
 <section class="px-2">
-    <div id="calendar"></div>
+    <div class="text-end my-3">
+        <button class="btn btn-sm btn-oding text-white px-5" onclick="print();">출 력</button>
+    </div>
+    <div id="print-area">
+        <div id="calendar"></div>
+    </div>
 </section>
 <!--캘린더 섹션 END -->
 
 <!-- 이벤트 정보 섹션 -->
-<section class="container my-5">
+<section class="px-5 my-5">
     <h3 class="py-2">이벤트 정보</h3>
 
     <div class="">
@@ -92,98 +97,109 @@
     <p>파일 형식에 따라 다운로드 방법이 다릅니다. '다운로드1' 버튼을 눌러서 반응이 없으면 '다운로드2' 버튼을 누르세요.</p>
 
     <div class="d-flex ps-5">
-        <div class="col-lg-2 py-2">
-            <p class="mb-1 fw-bold text-center">기획서</p>
+        <div class="col-lg-2 py-2 me-5">
+            <p class="mb-1 fw-bold text-center">웨딩팀 기획서</p>
             <div class="col">
-                <input id="plan" type="file" class="form-control" data-show-preview="false">
+                <input id="wplan" type="file" class="form-control" data-show-preview="false">
             </div>
-            <button id="plan-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
+            <button id="wplan-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile2(this);">
                 다운로드1
             </button>
-            <button id="plan-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">
+            <button id="wplan-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile1(this);">
                 다운로드2
             </button>
             <div class="switch d-flex justify-content-center mt-2">
-                <input id="plan-switch" name="plan-switch" class="switch-toggle switch-toggle-round"
+                <input id="wplan-switch" name="plan-switch" class="switch-toggle switch-toggle-round"
                        type="checkbox" disabled>
-                <label for="plan-switch"></label>
+                <label for="wplan-switch"></label>
             </div>
+            <!-- <div class="w-100 text-center">
+                 <button type="button" class="btn btn-sm btn-oding text-white" onclick="sendWPlanMsg();">고객알림 전송</button>
+             </div>-->
         </div>
-        <div class="col-lg-2 mx-2 align-items-center justify-content-center justify-content-md-start d-flex">
-            <button type="button" class="btn btn-oding text-white" onclick="sendPlanMsg();">고객알림 전송</button>
+
+        <div class="col-lg-2 py-2 me-5">
+            <p class="mb-1 fw-bold text-center">플라워팀 기획서</p>
+            <input id="fplan" type="file" class="file" data-show-preview="false">
+            <button id="fplan-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile2(this);">
+                다운로드1
+            </button>
+            <button id="fplan-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile1(this);">
+                다운로드2
+            </button>
+            <div class="switch d-flex justify-content-center mt-2">
+                <input id="fplan-switch" name="siksun-switch" class="switch-toggle switch-toggle-round"
+                       type="checkbox" disabled>
+                <label for="fplan-switch"></label>
+            </div>
+            <!--<div class="w-100 text-center">
+                <button type="button" class="btn btn-sm btn-oding text-white" onclick="sendFPlanMsg();">고객알림 전송</button>
+            </div>-->
+        </div>
+
+        <div class="col-lg-2 py-2 me-5">
+            <p class="mb-1 fw-bold text-center">조리팀 기획서</p>
+            <input id="cplan" type="file" class="file" data-show-preview="false">
+            <button id="cplan-down-btn1" class="btn btn-y-oding w-100" onclick="downloadFile2(this);">다운로드1</button>
+            <button id="cplan-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile1(this);">다운로드2
+            </button>
+            <div class="switch d-flex justify-content-center mt-2">
+                <input id="cplan-switch" name="mc-switch" class="switch-toggle switch-toggle-round" type="checkbox"
+                       disabled>
+                <label for="cplan-switch"></label>
+            </div>
+            <!--<div class="w-100 text-center">
+                <button type="button" class="btn btn-sm btn-oding text-white" onclick="sendCPlanMsg();">고객알림 전송</button>
+            </div>-->
+        </div>
+
+        <div class="col-lg-2 py-2 me-5">
+            <p class="mb-1 fw-bold text-center">연회팀 기획서</p>
+            <input id="dplan" type="file" class="file" data-show-preview="false">
+            <button id="dplan-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile2(this);">
+                다운로드1
+            </button>
+            <button id="dplan-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile1(this);">다운로드2
+            </button>
+            <div class="switch d-flex justify-content-center mt-2">
+                <input id="dplan-switch" name="honin-switch" class="switch-toggle switch-toggle-round"
+                       type="checkbox" disabled>
+                <label for="dplan-switch"></label>
+            </div>
+            <!--<div class="w-100 text-center">
+                <button type="button" class="btn btn-sm btn-oding text-white" onclick="sendDPlanMsg();">고객알림 전송</button>
+            </div>-->
         </div>
     </div>
 
-    <div class="d-flex px-5" style="background-color: #fff5ef;">
-
+    <div class="d-flex px-5 mt-5" style="background-color: #fff5ef;">
         <div class="col-lg-2 py-2 me-5">
-            <p class="mb-1 fw-bold text-center">식순</p>
-            <input id="siksun" type="file" class="file" data-show-preview="false">
-            <button id="siksun-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
+            <p class="mb-1 fw-bold text-center">행사 진행표</p>
+            <input id="summary" type="file" class="file" data-show-preview="false">
+            <button id="summary-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
                 다운로드1
             </button>
-            <button id="siksun-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">
+            <button id="summary-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">
                 다운로드2
             </button>
             <div class="switch d-flex justify-content-center mt-2">
-                <input id="siksun-switch" name="siksun-switch" class="switch-toggle switch-toggle-round"
+                <input id="summary-switch" name="sunghon-switch" class="switch-toggle switch-toggle-round"
                        type="checkbox" disabled>
-                <label for="siksun-switch"></label>
+                <label for="summary-switch"></label>
             </div>
         </div>
         <div class="col-lg-2 py-2 me-5">
-            <p class="mb-1 fw-bold text-center">사회자 스크립트</p>
-            <input id="mc" type="file" class="file" data-show-preview="false">
-            <button id="mc-down-btn1" class="btn btn-y-oding w-100" onclick="downloadFile1(this);">다운로드1</button>
-            <button id="mc-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">다운로드2
+            <p class="mb-1 fw-bold text-center">정산서</p>
+            <input id="bill" type="file" class="file" data-show-preview="false">
+            <button id="bill-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
+                다운로드1
+            </button>
+            <button id="bill-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">다운로드2
             </button>
             <div class="switch d-flex justify-content-center mt-2">
-                <input id="mc-switch" name="mc-switch" class="switch-toggle switch-toggle-round" type="checkbox"
+                <input id="bill-switch" name="etc-switch" class="switch-toggle switch-toggle-round" type="checkbox"
                        disabled>
-                <label for="mc-switch"></label>
-            </div>
-        </div>
-        <div class="col-lg-2 py-2 me-5">
-            <p class="mb-1 fw-bold text-center">혼인서약서</p>
-            <input id="honin" type="file" class="file" data-show-preview="false">
-            <button id="honin-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
-                다운로드1
-            </button>
-            <button id="honin-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">다운로드2
-            </button>
-            <div class="switch d-flex justify-content-center mt-2">
-                <input id="honin-switch" name="honin-switch" class="switch-toggle switch-toggle-round"
-                       type="checkbox" disabled>
-                <label for="honin-switch"></label>
-            </div>
-        </div>
-        <div class="col-lg-2 py-2 me-5">
-            <p class="mb-1 fw-bold text-center">성혼선언문</p>
-            <input id="sunghon" type="file" class="file" data-show-preview="false">
-            <button id="sunghon-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
-                다운로드1
-            </button>
-            <button id="sunghon-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">
-                다운로드2
-            </button>
-            <div class="switch d-flex justify-content-center mt-2">
-                <input id="sunghon-switch" name="sunghon-switch" class="switch-toggle switch-toggle-round"
-                       type="checkbox" disabled>
-                <label for="sunghon-switch"></label>
-            </div>
-        </div>
-        <div class="col-lg-2 py-2 me-5">
-            <p class="mb-1 fw-bold text-center">기타</p>
-            <input id="etc" type="file" class="file" data-show-preview="false">
-            <button id="etc-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
-                다운로드1
-            </button>
-            <button id="etc-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">다운로드2
-            </button>
-            <div class="switch d-flex justify-content-center mt-2">
-                <input id="etc-switch" name="etc-switch" class="switch-toggle switch-toggle-round" type="checkbox"
-                       disabled>
-                <label for="etc-switch"></label>
+                <label for="bill-switch"></label>
             </div>
         </div>
     </div>
@@ -201,7 +217,7 @@
         <textarea id="f-memo-info" class="w-100 form-control" rows="7"></textarea>
     </div>
     <div id="c-memo-wrap" class="row">
-        <p class="mb-1 fw-bold">케이터링 메모</p>
+        <p class="mb-1 fw-bold">조리팀 메모</p>
         <textarea id="c-memo-info" class="w-100 form-control" rows="7"></textarea>
     </div>
     <div class="text-end mt-1">
@@ -365,12 +381,12 @@
         timeZone: 'local',
         height: 'auto',
         eventClick: function (date, jsEvent, view) {
-            console.log(date.color);
+            console.log(date);
             //웨딩 행사인지 기업행사인지 '컬러'로 구분
-            if(date.color === '#6f8bf2'){
+            if (date.bgColor === '기업') {
                 //기업행사
                 selCorpData(date.id);
-            }else{
+            } else {
                 //웨딩 행사
                 //선택한 이벤트 데이터 가져오기
                 initDirectingView();

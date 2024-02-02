@@ -47,7 +47,6 @@
             <button class="btn btn-sm btn-warning mx-1" onclick="showFmemo();">플라워 메모</button>
             <button class="btn btn-sm btn-warning mx-1" onclick="showCmemo();">케이터링 메모</button>
             <button class="btn btn-sm btn-primary mx-1" onclick="updateCorp();">이벤트 정보 수정</button>
-            <button class="btn btn-sm btn-success mx-1" onclick="addRow();">항목추가</button>
             <input id="current-event-id" type="hidden">
         </div>
     </div>
@@ -101,10 +100,10 @@
             <div class="col-lg-2 py-2 me-5">
                 <p class="mb-1 fw-bold">사업자등록증</p>
                 <input id="tex-file" type="file" class="file" data-show-preview="false">
-                <button id="tex-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile1(this);">
+                <button id="tex-down-btn1" class="btn btn-sm mb-1 btn-y-oding w-100" onclick="downloadFile2(this);">
                     다운로드1
                 </button>
-                <button id="tex-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile2(this);">
+                <button id="tex-down-btn2" class="btn btn-sm btn-y-oding w-100" onclick="downloadFile1(this);">
                     다운로드2
                 </button>
                 <div class="switch d-flex justify-content-center mt-2">
@@ -151,6 +150,7 @@
     <p><span class="text-danger">'붉은색'</span> 항목은 '취소'건입니다.</p>
     <div id="contract-btn-group" class="invisible my-3">
         <button class="btn btn-sm btn-danger" onclick="cancelContList();">선택항목 취소</button>
+        <button class="btn btn-sm btn-success mx-1" onclick="addRow();">항목추가</button>
     </div>
 
     <div class="overflow-auto">

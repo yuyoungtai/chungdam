@@ -28,12 +28,12 @@ public class Message {
         String sms_url = "https://apis.aligo.in/send/";
         Map<String, String> sms = new HashMap<String, String>();
 
-        sms.put("user_id", "openwedding"); // SMS 아이디
-        sms.put("key", "qx4hrrwwhm25v5mu25j9up2l2t3xxkmu"); // 인증키
+        sms.put("user_id", "snsyun"); // SMS 아이디
+        sms.put("key", "mcbb7vb5ypl27jdzlhwmr7s5e3b5ssoh"); // 인증키
 
         sms.put("msg", msg); // 메세지 내용
         sms.put("receiver", receiver); // 수신번호
-        sms.put("sender", "16611623"); // 발신번호
+        sms.put("sender", "01024752500"); // 발신번호
         sms.put("testmode_yn", "N"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
 
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();

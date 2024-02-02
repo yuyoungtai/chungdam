@@ -79,7 +79,7 @@ const searchWeddingEvent = async () => {
                     response.data.forEach(item => {
                         tag += `
                         <div class="d-flex flex-wrap align-items-center text-center mb-3">
-                            <div class="col-1"><input class="wedding-check" type="checkbox" eventid="${item.eventId}"></div>
+                            <div class="col-1"><input class="wedding-check receiver" type="checkbox" eventid="${item.eventId}" checked></div>
                             <div class="col">${item.eventDate}</div>
                             <div class="col">${item.eventTime}</div>
                             <div class="col">${item.groom}</div>
@@ -118,7 +118,7 @@ const searchCorpEvent = async () => {
                     response.data.forEach(item => {
                         tag += `
                         <div class="d-flex flex-wrap align-items-center text-center mb-3">
-                            <div class="col-1"><input class="corp-check" type="checkbox" eventid="${item.corpId}"></div>
+                            <div class="col-1"><input class="corp-check receiver" type="checkbox" eventid="${item.corpId}" checked></div>
                             <div class="col">${item.eventDate}</div>
                             <div class="col">${item.eventTime}</div>
                             <div class="col">${item.corp}</div>
@@ -131,6 +131,52 @@ const searchCorpEvent = async () => {
             });
         }catch (e) {
             alert('웨딩행사 검색 오류: '+ e);
+        }
+    }
+}
+
+const sendDM = async () => {
+    const checkLists = document.querySelectorAll('.receiver:checked');
+    if(checkLists.length === 0){
+        alert('수신자를 선택하지 않았습니다.');
+        return false;
+    }else{
+        //수신자 데이터 생성
+        let receiverList = new Array();
+
+        console.log(document.querySelector('#corp-filter-check').checked);
+        if(document.querySelector('#corp-filter-check').checked){
+            //기업행사
+            const msg = document.querySelector('#msg-input').value;
+            for(const row of checkLists) {
+                const data = {
+                    id: row.attributes.eventid.value,
+                    type: 'corp',
+                    msg: msg
+                }
+                receiverList.push(data);
+            }
+        }else{
+            //웨딩 행사
+            const msg = document.querySelector('#msg-input').value;
+            for(const row of checkLists) {
+                const data = {
+                    id: row.attributes.eventid.value,
+                    type: 'wedding',
+                    msg: msg
+                }
+                receiverList.push(data);
+            }
+        }
+
+        //메시지 발송
+        try{
+            await axios.post('/sendDM', receiverList).then(response =>{
+                alert('메시지 발송 완료');
+                self.location.reload();
+            });
+        }catch (e) {
+            alert('메시지 발송 오류: '+ e);
         }
     }
 }

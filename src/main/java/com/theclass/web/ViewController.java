@@ -28,10 +28,10 @@ public class ViewController {
     public String smsManager(){
         String email = (String)httpSession.getAttribute("user");
 
-        if(email != null){
+        if(email == null){
             httpSession.invalidate();
         }
-        return "/smsManager";
+        return "smsManager";
     }
 
     @RequestMapping("/logout")
@@ -41,7 +41,7 @@ public class ViewController {
         if(email != null){
             httpSession.invalidate();
         }
-        return "/index";
+        return "index";
     }
 
     @RequestMapping("/userManager")

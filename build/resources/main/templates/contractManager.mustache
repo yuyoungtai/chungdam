@@ -47,7 +47,6 @@
             <button class="btn btn-sm btn-warning mx-1" onclick="showFmemo();">플라워 메모</button>
             <button class="btn btn-sm btn-warning mx-1" onclick="showCmemo();">케이터링 메모</button>
             <button class="btn btn-sm btn-primary mx-1" onclick="updateEvent();">이벤트 정보 수정</button>
-            <button class="btn btn-sm btn-success mx-1" onclick="addRow();">항목추가</button>
             <input id="current-event-id" type="hidden">
         </div>
     </div>
@@ -71,7 +70,7 @@
             </div>
             <div class="col-5">
                 <span>이메일</span>
-                <input id="email" type="text" class="form-control" readonly>
+                <input id="email" type="text" class="form-control">
             </div>
         </div>
 
@@ -130,18 +129,22 @@
 <!--계약 정보 섹션 -->
 <section class="px-5 my-5">
     <h3 class="mb-1">계약정보</h3>
+    <p class="mb-2">신규항목 or 기존 내용을 수정하신 후 <strong>'저장'</strong> 하실 때는 <strong>'체크박스'</strong>에 체크하신 후 <strong>'계약정보
+        저장'</strong> 버튼을 누르세요.</p>
     <p><span class="text-danger">'붉은색'</span> 항목은 '취소'건입니다.</p>
     <div id="contract-btn-group" class="invisible my-3">
-        <button class="btn btn-sm btn-danger" onclick="cancelContList();">선택항목 취소</button>
+        <button class="btn btn-sm btn-danger me-3" onclick="cancelContList();">선택항목 취소</button>
+        <button class="btn btn-sm btn-success mx-1" onclick="addRow();">항목추가</button>
     </div>
 
     <div class="overflow-auto">
         <div class="d-flex flex-nowrap text-center">
             <div class="col-1 fw-bold"><input id="all-check-btn" type="checkbox"></div>
+            <div class="col-2 col-md-1">상태</div>
             <div class="col-4 col-md-4 fw-bold">상품명</div>
-            <div class="col-3 fw-bold">단가</div>
+            <div class="col-2 col-md-3 fw-bold">단가</div>
             <div class="col-1 fw-bold">수량</div>
-            <div class="col-3 fw-bold">총 액</div>
+            <div class="col-2 fw-bold">총 액</div>
         </div>
         <hr>
         <div id="cont-wrap" class=""></div>
@@ -199,7 +202,7 @@
 
                     <div class="col-6">
                         <div class="input-group mb-3">
-                            <span class="input-group-text">이메일</span>
+                            <span class="input-group-text">이메일(선택)</span>
                             <input id="add-email" type="text" class="form-control">
                         </div>
                     </div>
@@ -207,28 +210,70 @@
                 <!--고객정보 END-->
 
                 <h3>이벤트 정보</h3>
-                <div class="mb-3">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">예식일</span>
-                        <input id="add-event-date" type="date" class="form-control">
+                <div class="d-flex flex-wrap">
+                    <div class="mb-3 col-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">예식일</span>
+                            <input id="add-event-date" type="date" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">예식시간</span>
+                            <input id="add-event-time" type="time" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">보증인원</span>
+                            <input id="add-person" type="number" class="form-control">
+                        </div>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">예식시간</span>
-                        <input id="add-event-time" type="time" class="form-control">
+                <hr>
+                <div>
+                    <h3>기본 계약 정보</h3>
+                    <div class="d-flex flex-nowrap text-center justify-content-center align-items-center">
+                        <div class="col-4 col-md-4 fw-bold">상품명</div>
+                        <div class="col-3 fw-bold">가격</div>
+                        <div class="col-1 fw-bold">수량</div>
+                        <div class="col-3 fw-bold">총액</div>
+                    </div>
+                    <hr>
+                    <div class="first-cont d-flex flex-nowrap text-center justify-content-center align-items-center">
+                        <div class="col-4 col-md-4 fw-bold"><input type="text"
+                                                                   class="form-control text-center cont-title"
+                                                                   value="대관 & 연출"></div>
+                        <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-supply"
+                                                          value="0"
+                                                          onkeyup="getRowTotal(this);"></div>
+                        <div class="col-1 fw-bold"><input type="text" class="form-control text-center cont-count"
+                                                          value="1"
+                                                          onkeyup="getRowTotal(this);"></div>
+                        <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-total"
+                                                          value="0"
+                                                          readonly></div>
+                    </div>
+                    <div class="first-cont d-flex flex-nowrap text-center justify-content-center align-items-center my-3">
+                        <div class="col-4 col-md-4 fw-bold"><input type="text"
+                                                                   class="form-control text-center cont-title"
+                                                                   value="플라워 연출"></div>
+                        <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-supply"
+                                                          value="0"
+                                                          onkeyup="getRowTotal(this);"></div>
+                        <div class="col-1 fw-bold"><input type="text" class="form-control text-center cont-count"
+                                                          value="1"
+                                                          onkeyup="getRowTotal(this);"></div>
+                        <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-total"
+                                                          value="0"
+                                                          readonly></div>
                     </div>
                 </div>
-
-                <div class="mb-3">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">보증인원</span>
-                        <input id="add-person" type="number" class="form-control">
-                    </div>
-                </div>
+                <!--이벤트 정보 END-->
             </div>
-            <!--이벤트 정보 END-->
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취 소</button>
@@ -259,8 +304,8 @@
 </div>
 <!--고객 검색 결과 모달END -->
 {{>layout/indexFooter}}
-<script src="/js/addContract.js"></script>
 <script src="/js/search.js"></script>
+<script src="/js/addContract.js"></script>
 <script src="/js/editContract.js"></script>
 <script src="/js/editEvent.js"></script>
 <script src="/js/contMemo.js"></script>

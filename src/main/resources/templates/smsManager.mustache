@@ -40,6 +40,29 @@
     <div id="result-wrap" class="my-5"></div>
 </section>
 
+<!--문자 내용 입력 모달 -->
+<div id="msg-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">메시지 입력</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>발송할 메시지를 입력하세요.<br/>'발송' 버튼을 누르기 전에 '오탈자'있는지 검수해주세요.</p>
+                <div>
+                    <textarea id="msg-input" class="form-control" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫 기</button>
+                <button type="button" class="btn btn-oding text-white" onclick="sendDM();">메시지 발송</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--문자 내용 입력 모달 END -->
+
 
 {{>layout/indexFooter}}
 <script src="/js/smsManager.js"></script>

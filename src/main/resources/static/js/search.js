@@ -166,7 +166,7 @@ const printContList = (contList) => {
                 //취소건
                 tag += `
             <div class="d-flex flex-nowrap text-center align-items-center">
-                <div class="col-1"><input type="checkbox" class="cont-check" no="${item.contId}" checked></div>
+                <div class="col-1"><input type="checkbox" class="cont-check" no="${item.contId}"></div>
                 <div class="col-2 col-md-1">${item.state}</div>
                 <div class="col-4 col-md-4 fw-bold"><input type="text" class="form-control text-center cont-title text-danger" value="${item.prodTitle}"></div>
                 <div class="col-2 col-md-3 fw-bold"><input type="text" class="form-control text-center cont-supply text-danger" value="`+numberWithCommas(item.applyPrice)+`" onkeyup="getRowTotal(this);"></div>
@@ -178,7 +178,7 @@ const printContList = (contList) => {
                 contTotal += item.total;
                 tag += `
             <div class="d-flex flex-nowrap text-center align-items-center">
-                <div class="col-1"><input type="checkbox" class="cont-check" no="${item.contId}" checked></div>
+                <div class="col-1"><input type="checkbox" class="cont-check" no="${item.contId}"></div>
                 <div class="col-2 col-md-1">${item.state}</div>
                 <div class="col-4 col-md-4 fw-bold"><input type="text" class="form-control text-center cont-title" value="${item.prodTitle}"></div>
                 <div class="col-2 col-md-3 fw-bold"><input type="text" class="form-control text-center cont-supply" value="`+numberWithCommas(item.applyPrice)+`" onkeyup="getRowTotal(this);"></div>

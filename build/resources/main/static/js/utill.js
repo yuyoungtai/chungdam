@@ -1,3 +1,5 @@
+let initBodyHtml = '';
+
 //숫자에 콤마 찍기
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -16,4 +18,15 @@ function getNumberAbsolute(x) {
 //휴대폰 번호 형식 리턴
 function getHpNumber(x) {
     return x.toString().replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+}
+
+const beforePrint = () => {
+    initBodyHtml = document.body.innerHTML;
+    document.body.innerHTML = document.querySelector('#print-area').innerHTML;
+}
+
+const print = () => {
+    alert('출력후 화면을 새로고침하면 정상으로 보입니다.');
+    window.onbeforeprint = beforePrint();
+    window.print();
 }

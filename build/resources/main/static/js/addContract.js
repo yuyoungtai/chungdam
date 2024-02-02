@@ -19,6 +19,19 @@ const initAddModal = () =>{
 
 //신규 이벤트 등록
 const addNewEvent = async () => {
+    //초기 계약항목 데이터셋
+    let contList = new Array();
+
+    document.querySelectorAll('.first-cont').forEach(item => {
+        const data = {
+            prodTitle: item.querySelector('.cont-title').value,
+            applyPrice: getNumber(item.querySelector('.cont-supply').value),
+            count: getNumber(item.querySelector('.cont-count').value),
+            total: getNumber(item.querySelector('.cont-total').value),
+        }
+        contList.push(data);
+    });
+
     if(checkAddData()){
         try{
             const groom = document.querySelector('#add-groom').value;
@@ -31,7 +44,7 @@ const addNewEvent = async () => {
             const email = document.querySelector('#add-email').value;
 
             await axios.post('/addNewEvent', {
-                groom, groomHp, bride, brideHp, eventDate, eventTime, person, email
+                groom, groomHp, bride, brideHp, eventDate, eventTime, person, email, contList
             }).then(response => {
                 if(response.data === 'groomHp'){
                     alert('기존에 신랑님 연락처로 등록된 정보가 존재합니다.');
@@ -61,7 +74,6 @@ function checkAddData(){
     const eventDate = document.querySelector('#add-event-date').value;
     const eventTime = document.querySelector('#add-event-time').value;
     const person = document.querySelector('#add-person').value;
-    const email = document.querySelector('#add-email').value;
 
     if(groom === ''){
         alert('신랑님 성함을 입력하세요.');
@@ -84,9 +96,6 @@ function checkAddData(){
     }else if(person === ''){
         alert('보증인원을 입력하세요.');
         return false;
-    }else if(email === ''){
-        alert('Email을 입력하세요.');
-        return false;
     }else{
         return true;
     }
@@ -100,6 +109,8 @@ const findEventByEventId = async (eventId) =>{
         }).then(response => {
             //이벤트 정보 출력
             printEventInfo(response.data);
+            //계약 항목 출력 search.js
+            getContractList(response.data.eventId);
         });
     }catch (e) {
         alert('이벤트 정보 로딩 오류: '+e);

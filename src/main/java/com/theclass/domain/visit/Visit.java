@@ -36,7 +36,7 @@ public class Visit {
     @Column(name = "guest_hp", columnDefinition = "VARCHAR(20)")
     private String guestHp;
 
-    @Column(name = "event_date", columnDefinition = "VARCHAR(10)")
+    @Column(name = "event_date", columnDefinition = "VARCHAR(200)")
     private String eventDate;
 
     @Column(columnDefinition = "VARCHAR(30)")

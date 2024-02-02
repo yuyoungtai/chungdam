@@ -2,11 +2,12 @@
 const addRow = ()=> {
     const rowTag = `
         <div class="d-flex flex-nowrap text-center align-items-center">
-            <div class="col-1"><input type="checkbox" class="cont-check" no="0"></div>
+            <div class="col-1"><input type="checkbox" class="cont-check" no="0" checked></div>
+            <div class="col-2 col-md-1">신규</div>
             <div class="col-4 col-md-4 fw-bold"><input type="text" class="form-control text-center cont-title"></div>
-            <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-supply" value="0" onkeyup="getRowTotal(this);"></div>
+            <div class="col-2 col-md-3 fw-bold"><input type="text" class="form-control text-center cont-supply" value="0" onkeyup="getRowTotal(this);"></div>
             <div class="col-1 fw-bold"><input type="text" class="form-control text-center cont-count" value="1" onkeyup="getRowTotal(this);"></div>
-            <div class="col-3 fw-bold"><input type="text" class="form-control text-center cont-total" value="0" readonly></div>
+            <div class="col-2 fw-bold"><input type="text" class="form-control text-center cont-total" value="0" readonly></div>
         </div>
     `;
     document.querySelector('#cont-wrap').insertAdjacentHTML('beforeend', rowTag);
