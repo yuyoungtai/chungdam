@@ -1,0 +1,63 @@
+{{>layout/indexHeader}}
+<body>
+<section id="page-title" class="page-title mb-5">
+    <div class="container clearfix">
+        <h1>상담 관리</h1>
+    </div>
+</section>
+
+<section>
+    <div class="text-center">
+        <button class="btn btn-oding text-white px-5" onclick="showAddModal();">신규 상담 등록</button>
+    </div>
+</section>
+
+<section id="print-area" class="my-5 px-5">
+    <h3>상담 예약 현황</h3>
+    <div class="d-flex flex-nowrap overflow-auto text-center">
+        <div class="col fw-bold">방문일</div>
+        <div class="col fw-bold">상담</div>
+        <div class="col fw-bold">성함</div>
+        <div class="col fw-bold">연락처</div>
+        <div class="col fw-bold">예식일</div>
+        <div class="col fw-bold">인원</div>
+        <div class="col fw-bold">비교업장 및 참고사항</div>
+        <div class="col fw-bold">예약경로</div>
+        <div class="col fw-bold">해피콜</div>
+        <div class="col fw-bold">확인자</div>
+    </div>
+    <hr>
+    <div id="current-list-wrap">
+        {{#list}}
+            <div class="d-flex flex-nowrap overflow-auto text-center border-bottom py-2">
+                <div class="col">{{visitDate}}<br>{{visitTime}}</div>
+                <div class="col">{{visitType}}</div>
+                <div class="col">{{guestName}}</div>
+                <div class="col">{{guestHp}}</div>
+                <div class="col">{{eventDate}}</div>
+                <div class="col">{{person}}</div>
+                <div class="col">{{checkMemo}}</div>
+                <div class="col">{{path}}</div>
+                <div class="col">{{memo}}</div>
+                <div class="col">{{masterName}}<br>{{masterDate}}</div>
+            </div>
+        {{/list}}
+    </div>
+</section>
+
+
+{{>layout/indexFooter}}
+<script type="text/javascript">
+    const itemMenuListEle = document.getElementsByClassName('menu-item');
+    for (const itemMenu of itemMenuListEle) {
+        itemMenu.classList.remove('current');
+    }
+
+    document.querySelector('#visit-menu').classList.add('current');
+
+    alert('출력후 현재 창은 닫으시면 됩니다.');
+    window.onbeforeprint = beforePrint();
+    window.print();
+</script>
+</body>
+</html>

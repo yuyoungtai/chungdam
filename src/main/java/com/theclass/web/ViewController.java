@@ -24,6 +24,26 @@ public class ViewController {
     private final VisitService visitService;
     private final HttpSession httpSession;
 
+    //방문상담 프린트 페이지
+    @RequestMapping("/consultingPrintView")
+    public String consultingPrintView(Model model){
+        //기본적으로 오늘 날짜 이후 리스트 출력
+        String toDay = LocalDate.now().toString();
+        List<VisitDto> result = visitService.findVisitsByVisitDateGreaterThanEqualOrderByVisitDateAndOrderByVisitTime(toDay);
+
+        if(result.size() > 0){
+            for(VisitDto imsi : result){
+                //연도 삭제하여 출력
+                imsi.setVisitDate(imsi.getVisitDate().substring(5));
+                imsi.setMasterDate(imsi.getMasterDate().substring(5));
+            }
+        }
+
+        model.addAttribute("list", result);
+
+        return "consultingPrintView";
+    }
+
     @RequestMapping("/smsManager")
     public String smsManager(){
         String email = (String)httpSession.getAttribute("user");
@@ -73,6 +93,8 @@ public class ViewController {
 
             if(result.size() > 0){
                 for(VisitDto imsi : result){
+                    //연도 삭제하여 출력
+                    imsi.setVisitDate(imsi.getVisitDate().substring(5));
                     imsi.setMasterDate(imsi.getMasterDate().substring(5));
                 }
             }

@@ -314,6 +314,9 @@ public class RestController {
                         }else if(imsiCont.getProdTitle().contains("코스")){
                             foodType = "코스";
                             foodCount = String.valueOf(imsiCont.getCount());
+                        }else if(imsiCont.getProdTitle().contains("큐브")){
+                            foodType = "큐브";
+                            foodCount = String.valueOf(imsiCont.getCount());
                         }
                     }
                 }
@@ -332,6 +335,9 @@ public class RestController {
                     }else if(foodType.equals("코스")){
                         calenda.setColor("#6f8bf2");
                         calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-C");
+                    }else if(foodType.equals("큐브")){
+                        calenda.setColor("#189b04");
+                        calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-Q");
                     }else{
                         calenda.setColor("#000000");
                     }
@@ -358,6 +364,9 @@ public class RestController {
                         }else if(imsiCorp.getProdTitle().contains("코스")){
                             foodType = "코스";
                             foodCount = String.valueOf(imsiCorp.getCount());
+                        }else if(imsiCorp.getProdTitle().contains("큐브")){
+                            foodType = "큐브";
+                            foodCount = String.valueOf(imsiCorp.getCount());
                         }
                     }
                 }
@@ -376,8 +385,10 @@ public class RestController {
                     }else if(foodType.equals("코스")){
                         calenda.setColor("#6f8bf2");
                         calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-C");
-                    }
-                    else{
+                    }else if(foodType.equals("큐브")){
+                        calenda.setColor("#189b04");
+                        calenda.setTitle(calenda.getTitle()+"/"+foodCount+"-Q");
+                    }else{
                         calenda.setColor("#000000");
                     }
 

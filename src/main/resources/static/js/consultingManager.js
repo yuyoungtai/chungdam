@@ -181,3 +181,8 @@ const delVisit = async () => {
         alert('삭제 오류: '+e);
     }
 }
+
+//프린드 페이지로 새창 띄우기
+const printPage = () => {
+    window.open('/consultingPrintView', '_blank');
+}

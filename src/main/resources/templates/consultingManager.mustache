@@ -15,8 +15,7 @@
 <section id="print-area" class="my-5 px-5">
     <h3>상담 예약 현황</h3>
     <div class="d-flex flex-nowrap overflow-auto text-center">
-        <div class="col fw-bold">방문날짜</div>
-        <div class="col fw-bold">방문시간</div>
+        <div class="col fw-bold">방문일</div>
         <div class="col fw-bold">상담</div>
         <div class="col fw-bold">성함</div>
         <div class="col fw-bold">연락처</div>
@@ -32,8 +31,7 @@
     <div id="current-list-wrap">
         {{#list}}
             <div class="d-flex flex-nowrap overflow-auto text-center border-bottom py-2">
-                <div class="col">{{visitDate}}</div>
-                <div class="col">{{visitTime}}</div>
+                <div class="col">{{visitDate}}<br>{{visitTime}}</div>
                 <div class="col">{{visitType}}</div>
                 <div class="col">{{guestName}}</div>
                 <div class="col">{{guestHp}}</div>
@@ -50,7 +48,7 @@
 </section>
 
 <div class="text-center my-5">
-    <button class="btn btn-oding text-white px-5" onclick="print();">출 력</button>
+    <button class="btn btn-oding text-white px-5" onclick="printPage();">출 력</button>
 </div>
 
 
@@ -80,24 +78,36 @@
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="consulting-type" id="type3" title="시식상담">
+                                <input class="form-check-input" type="radio" name="consulting-type" id="type3" title="기업미팅">
                                 <label class="form-check-label" for="type3">
-                                    시식상담
+                                    기업미팅
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="consulting-type" id="type8" title="계약자 방문">
+                                <label class="form-check-label" for="type5">
+                                    계약자 방문
                                 </label>
                             </div>
                         </div>
 
                         <div class="col-6">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="consulting-type" id="type4" title="본식 ZOOM">
+                                <input class="form-check-input" type="radio" name="consulting-type" id="type4" title="재방문">
                                 <label class="form-check-label" for="type4">
-                                    본식 ZOOM
+                                    재방문
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="consulting-type" id="type5" title="1주년">
                                 <label class="form-check-label" for="type5">
                                     1주년
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="consulting-type" id="type7" title="재방문">
+                                <label class="form-check-label" for="type4">
+                                    재방문
                                 </label>
                             </div>
                             <div class="form-check">
@@ -130,7 +140,7 @@
                         <div class="col"><input id="guest-hp" type="text" class="form-control"></div>
                     </div>
                     <div class="col-6 mt-4">
-                        <h4 class="mb-2">예식일</h4>
+                        <h4 class="mb-2">예식일(행사일)</h4>
                         <div class="col"><input id="event-date" type="text" class="form-control"></div>
                     </div>
                     <div class="col-6 mt-4">
