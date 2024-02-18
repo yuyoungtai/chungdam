@@ -1,0 +1,81 @@
+{{>layout/indexHeader}}
+<body>
+<div class="text-end my-5 me-5">
+    <button class="btn btn-oding text-white" onclick="print();">출력</button>
+</div>
+<section id="print-area" class="col-12 d-flex flex-wrap">
+    <div id="calendar1" class="col-6"></div>
+    <div id="calendar2" class="col-6"></div>
+</section>
+
+
+{{>layout/indexFooter}}
+<script src="/library/fullCalendar/moment.min.js"></script>
+<script src="/library/fullCalendar/fullcalendar.min.js"></script>
+<script src="/library/fullCalendar/ko.js"></script>
+<script src="/js/searchDirecting.js"></script>
+<script type="text/javascript">
+    const itemMenuListEle = document.getElementsByClassName('menu-item');
+    for (const itemMenu of itemMenuListEle) {
+        itemMenu.classList.remove('current');
+    }
+
+    document.querySelector('#directing-menu').classList.add('current');
+
+    //현재 달 구하기
+    const now = new Date();
+    const year = now.getFullYear();
+    let month = now.getMonth()+1;
+    console.log(month);
+
+    for(let i=0; i<6; i++){
+        //캘린더 초기화.
+        $('#calendar1').fullCalendar({
+            defaultDate: '2024-01-01',
+            lang: 'ko',
+            firstDay: 1,
+            aspectRatio: 2,
+            //eventOrder          : 'Array',
+            eventOrder: 'title',
+            eventBackgroundColor: '#D09187',
+            eventBorderColor: '#D09187',
+            timeZone: 'local',
+            height: 'auto',
+            eventRender: function (event, element, monthView) {
+            }
+        });
+
+        //캘린더 초기화.
+        month++;
+        console.log(year+'-'+month+'-01');
+        $('#calendar2').fullCalendar({
+            defaultDate: '2024-02-01',
+            lang: 'ko',
+            firstDay: 1,
+            aspectRatio: 2,
+            //eventOrder          : 'Array',
+            eventOrder: 'title',
+            eventBackgroundColor: '#D09187',
+            eventBorderColor: '#D09187',
+            height: 'auto',
+            eventRender: function (event, element, monthView) {
+            }
+        });
+    }
+
+    const getCalendarDataAll = async () => {
+        try{
+            await axios.get('/getDirectingData')
+                    .then(response => {
+                        $('#calendar1').fullCalendar('addEventSource', response.data);
+                        $('#calendar2').fullCalendar('addEventSource', response.data);
+                    });
+        }catch (e) {
+            alert('데이터 가져오기 오류: '+e);
+        }
+    }
+
+    getCalendarDataAll();
+</script>
+</body>
+</html>

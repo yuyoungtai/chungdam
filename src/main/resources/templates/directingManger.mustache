@@ -369,6 +369,9 @@
 
     document.querySelector('#directing-menu').classList.add('current');
 
+    //프린트 페이지 새 창으로 열기
+    window.open('directingCalendarPrintView', '_blank');
+
     //캘린더 초기화.
     $('#calendar').fullCalendar({
         lang: 'ko',

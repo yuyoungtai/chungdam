@@ -24,6 +24,13 @@ public class ViewController {
     private final VisitService visitService;
     private final HttpSession httpSession;
 
+    //디렉팅 캘린더 출력 페이지(모아보기)
+    @RequestMapping("/directingCalendarPrintView")
+    public String directingCalendarPrintView(){
+
+        return "directingCalendarPrintView";
+    }
+
     //방문상담 프린트 페이지
     @RequestMapping("/consultingPrintView")
     public String consultingPrintView(Model model){
