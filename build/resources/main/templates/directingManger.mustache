@@ -35,7 +35,7 @@
 <!--캘린더 섹션 -->
 <section class="px-2">
     <div class="text-end my-3">
-        <button class="btn btn-sm btn-oding text-white px-5" onclick="print();">출 력</button>
+        <button class="btn btn-sm btn-oding text-white px-5" onclick="printView();">출 력</button>
     </div>
     <div id="print-area">
         <div id="calendar"></div>
@@ -368,6 +368,14 @@
     }
 
     document.querySelector('#directing-menu').classList.add('current');
+
+    //'출력' 버튼
+    const printView = () => {
+        window.open('directingCalendarPrintView', '_blank');
+    }
+
+    //프린트 페이지 새 창으로 열기
+   // window.open('directingCalendarPrintView', '_blank');
 
     //캘린더 초기화.
     $('#calendar').fullCalendar({

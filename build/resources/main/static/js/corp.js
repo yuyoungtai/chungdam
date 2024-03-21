@@ -54,7 +54,7 @@ function checkAddCorpData() {
     const corpTitle = document.querySelector('#add-corp-title').value;
     const guest = document.querySelector('#add-guest').value;
     const guestHp = document.querySelector('#add-guest-hp').value;
-    const email = document.querySelector('#add-corp-email').value;
+    //const email = document.querySelector('#add-corp-email').value;
     const eventDate = document.querySelector('#add-corp-event-date').value;
     const eventTime = document.querySelector('#add-corp-event-time').value;
     const person = document.querySelector('#add-corp-person').value;
@@ -79,9 +79,6 @@ function checkAddCorpData() {
         return false;
     } else if (person === '') {
         alert('보증인원을 입력하세요.');
-        return false;
-    } else if (email === '') {
-        alert('Email을 입력하세요.');
         return false;
     } else {
         return true;
@@ -130,5 +127,5 @@ const printCorpInfo = (event) => {
     }
 
     //계약 버튼 그룹 토글
-    document.querySelector('#cont-btn-group').classList.remove('invisible');
+    document.querySelector('#contract-btn-group').classList.remove('invisible');
 }

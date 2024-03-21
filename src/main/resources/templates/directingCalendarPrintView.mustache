@@ -3,9 +3,9 @@
 <div class="text-end my-5 me-5">
     <button class="btn btn-oding text-white" onclick="print();">출력</button>
 </div>
-<section id="print-area" class="col-12 d-flex flex-wrap">
-    <div id="calendar1" class="col-6"></div>
-    <div id="calendar2" class="col-6"></div>
+<section id="print-area" class="">
+    <div id="calendar-container" class="col-12 d-flex flex-wrap">
+    </div>
 </section>
 
 
@@ -22,60 +22,148 @@
 
     document.querySelector('#directing-menu').classList.add('current');
 
-    //현재 달 구하기
-    const now = new Date();
-    const year = now.getFullYear();
-    let month = now.getMonth()+1;
-    console.log(month);
+    /////////////////////////////////////////////////////////
+    //캘린더 그리기
+    /////////////////////////////////////////////////////////
 
-    for(let i=0; i<6; i++){
-        //캘린더 초기화.
-        $('#calendar1').fullCalendar({
-            defaultDate: '2024-01-01',
-            lang: 'ko',
-            firstDay: 1,
-            aspectRatio: 2,
-            //eventOrder          : 'Array',
-            eventOrder: 'title',
-            eventBackgroundColor: '#D09187',
-            eventBorderColor: '#D09187',
-            timeZone: 'local',
-            height: 'auto',
-            eventRender: function (event, element, monthView) {
-            }
-        });
 
-        //캘린더 초기화.
-        month++;
-        console.log(year+'-'+month+'-01');
-        $('#calendar2').fullCalendar({
-            defaultDate: '2024-02-01',
-            lang: 'ko',
-            firstDay: 1,
-            aspectRatio: 2,
-            //eventOrder          : 'Array',
-            eventOrder: 'title',
-            eventBackgroundColor: '#D09187',
-            eventBorderColor: '#D09187',
-            height: 'auto',
-            eventRender: function (event, element, monthView) {
+    const calendarDates = document.getElementById("calendarDates");
+
+    /* renderCalendar 함수는 월별 캘랜더를 생성하고 표시하는 함수이다. */
+    function renderCalendar(year, month, list) {
+
+        /* firstDayOfMonth 변수에 현재 월의 첫 번째 날짜를 나타내는 Date 객체를 저장한다.
+      해당 월의 첫 번째 날짜에 대한 정보를 얻는다. */
+        const firstDayOfMonth = new Date(year, month-1, 1);
+
+        /* daysInMonth 변수에 현재 월의 총 일 수를 나타내는 값을 저장한다.
+        해당 월이 몇 일까지 있는지 알 수 있다. */
+        const daysInMonth = new Date(year, month-1, 0).getDate();
+
+        /* 변수에 현재 월의 첫 번째 날짜의 요일을 나타내는 값을 저장한다.
+        해당 월의 첫 번째 날짜가 무슨 요일인지 알 수 있다. */
+        const startDayOfWeek = firstDayOfMonth.getDay();
+        console.log(firstDayOfMonth+' : '+startDayOfWeek);
+
+        // 월을 나타내는 요소에 현재 월과 연도를 설정하여 표시한다.
+
+        //캘린더 기본 태그
+        let calendarDefault = `
+<table class="calendar-container">
+<tr class="text-center" "><th colspan="7" style="font-weight: bold; padding: 5px 0;">`+year+'년 '+month+'월</th></tr>';
+
+        calendarDefault+= `
+        <tr class="">
+            <th class="day text-center">월</th>
+            <th class="day text-center">화</th>
+            <th class="day text-center">수</th>
+            <th class="day text-center">목</th>
+            <th class="day text-center">금</th>
+            <th class="day text-center">토</th>
+            <th class="day text-center">일</th>
+        </tr>
+        <tbody class="">`;
+    //</div>      `;
+
+       // calendarDates.innerHTML = ""; // 일자를 표시하는 그리드 컨테이너를 비운다.
+
+
+        // 빈 날짜(이전 달)
+        calendarDefault += `<tr>`;
+
+        for (let i = 1; i < startDayOfWeek; i++) {
+            calendarDefault += `<td class="date empty"></td>`;
+            // 생성한 빈 날짜 요소를 캘린더 그리드에 추가한다.
+        }
+
+        //데이터 검색
+
+        // 현재 달의 날짜
+        for (let i = 1; i <= daysInMonth; i++) {
+            let currentDate = '';
+
+            if(month<10){
+                if(i < 10){
+                    currentDate = year+'-0'+month+'-0'+i;
+                }else{
+                    currentDate = year+'-0'+month+'-'+i;
+                }
+            }else{
+                if(i < 10){
+                    currentDate = year+'-'+month+'-0'+i;
+                }else{
+                    currentDate = year+'-'+month+'-'+i;
+                }
             }
-        });
+
+            calendarDefault += `<td class="date"><div class="text-center">${i}</div>`;
+
+            //일치여부 플래그
+            let checkFlag = 'default';
+
+            list.forEach(item => {
+                if(item.start === currentDate) {
+                    //메뉴에 따른 백그라운드 컬러 설정.
+                    if(item.title.includes('-Q')){
+                        calendarDefault += `<div class="text-center text-white" style="background-color: #189b04;">${item.title}</div>`;
+                    }else if(item.title.includes('-B')){
+                        calendarDefault += `<div class="text-center text-white" style="background-color: #e08282;">${item.title}</div>`;
+                    }else{
+                        calendarDefault += `<div class="text-center text-white" style="background-color: #6f8bf2;">${item.title}</div>`;
+                    }
+                }
+            });
+
+            calendarDefault += `</td>`;
+
+            //토요일은 </tr> 태그 추가
+            const dayOfWeek = new Date(currentDate).getDay();
+            if(dayOfWeek === 0){
+                calendarDefault += `</tr>`;
+            }
+        }
+        calendarDefault += `</tbody></table>`;
+
+        document.querySelector('#calendar-container').insertAdjacentHTML('beforeend', calendarDefault);
     }
+
+
 
     const getCalendarDataAll = async () => {
         try{
             await axios.get('/getDirectingData')
                     .then(response => {
-                        $('#calendar1').fullCalendar('addEventSource', response.data);
-                        $('#calendar2').fullCalendar('addEventSource', response.data);
+                        console.log(response.data);
+                        response.data.forEach(item => {
+                            console.log(item.start);
+                        });
+                        startCalnedar(response.data);
                     });
         }catch (e) {
             alert('데이터 가져오기 오류: '+e);
         }
     }
 
+
     getCalendarDataAll();
+
+    //캘린더 호출
+    const startCalnedar = (dataList) =>{
+        // 현재 날짜를 나타내는 Date 객체를 저장한다.
+        const today = new Date();
+
+        /* 현재 월을 나타내는 값을 저장한다. getMonth() 메서드는 0부터 시작하는 월을 반환하므로
+        1월이면 0, 2월이면 1을 반환한다. */
+        let currentMonth = today.getMonth();
+
+        // 변수에 현재 연도를 나타내는 값을 저장한다.
+        let currentYear = today.getFullYear();
+
+        //현재 '월' 부터 12월까지 캘린더 그리기
+        for(let m=currentMonth; m < 12; m++){
+            renderCalendar(currentYear, m+1, dataList);
+        }
+    }
 </script>
 </body>
 </html>

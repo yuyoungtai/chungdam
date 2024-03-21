@@ -307,6 +307,7 @@ public class RestController {
 
                 List<ContractDto> imsiContList = contractService.findContractsByEventId(cont.getEventId());
                 if(imsiContList.size() > 0){
+                    //해당 이벤트 계약내용을 검색해서 식사 메뉴 분류
                     for(ContractDto imsiCont : imsiContList){
                         if(imsiCont.getProdTitle().contains("뷔페")){
                             foodType = "뷔페";
